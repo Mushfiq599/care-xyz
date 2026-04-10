@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
     const { data: session } = useSession();
@@ -32,6 +33,7 @@ export default function Navbar() {
 
                 {/* Auth Buttons */}
                 <div className="hidden md:flex items-center gap-3">
+                    <ThemeToggle></ThemeToggle>
                     {!session ? (
                         <>
                             <Link
@@ -113,6 +115,10 @@ export default function Navbar() {
                         <Link href="/my-bookings" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>My Bookings</Link>
                     )}
                     <hr className="border-cborder" />
+                    <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Dark Mode</span>
+                        <ThemeToggle />
+                    </div>
                     {!session ? (
                         <div className="flex gap-3">
                             <Link href="/login" className="flex-1 text-center px-4 py-2 text-sm border border-primary text-primary rounded-lg hover:bg-primary hover:text-white transition">Login</Link>
