@@ -1,0 +1,68 @@
+import { NextResponse } from "next/server";
+
+const locationData = {
+    "Dhaka": {
+        "Dhaka": {
+            "Dhaka North": ["Gulshan", "Banani", "Uttara", "Mirpur", "Mohakhali"],
+            "Dhaka South": ["Old Dhaka", "Lalbagh", "Hazaribagh", "Kotwali", "Sutrapur"]
+        },
+        "Gazipur": {
+            "Gazipur Sadar": ["Tongi", "Joydebpur", "Konabari", "Basan", "Kaliganj"]
+        },
+        "Narayanganj": {
+            "Narayanganj Sadar": ["Fatullah", "Siddhirganj", "Bandar", "Rupganj"]
+        }
+    },
+    "Chattogram": {
+        "Chattogram": {
+            "Chattogram City": ["Agrabad", "GEC", "Halishahar", "Panchlaish", "Khulshi"],
+            "Sitakunda": ["Sitakunda Sadar", "Barabkunda", "Kumira"]
+        },
+        "Cox's Bazar": {
+            "Cox's Bazar Sadar": ["Cox's Bazar Town", "Teknaf", "Ukhia"]
+        }
+    },
+    "Khulna": {
+        "Khulna": {
+            "Khulna City": ["Sonadanga", "Khalishpur", "Daulatpur", "Rupsha"]
+        },
+        "Jessore": {
+            "Jessore Sadar": ["Jessore Town", "Jhikargacha", "Sharsha"]
+        }
+    },
+    "Rajshahi": {
+        "Rajshahi": {
+            "Rajshahi City": ["Boalia", "Motihar", "Rajpara", "Shah Makhdum"]
+        },
+        "Bogura": {
+            "Bogura Sadar": ["Bogura Town", "Sherpur", "Shibganj"]
+        }
+    },
+    "Barisal": {
+        "Barisal": {
+            "Barisal City": ["Kotwali", "Bandhar", "Barisal Sadar"]
+        }
+    },
+    "Sylhet": {
+        "Sylhet": {
+            "Sylhet City": ["Sylhet Sadar", "Amberkhana", "Zindabazar", "Uposhahar"]
+        },
+        "Moulvibazar": {
+            "Moulvibazar Sadar": ["Moulvibazar Town", "Sreemangal", "Kamalganj"]
+        }
+    },
+    "Rangpur": {
+        "Rangpur": {
+            "Rangpur City": ["Rangpur Sadar", "Mahiganj", "Gangachhara"]
+        }
+    },
+    "Mymensingh": {
+        "Mymensingh": {
+            "Mymensingh City": ["Mymensingh Sadar", "Trishal", "Bhaluka"]
+        }
+    }
+};
+
+export async function GET() {
+    return NextResponse.json(locationData);
+}
