@@ -52,12 +52,6 @@ const stats = [
     { value: "98%", label: "Satisfaction Rate" },
 ];
 
-const reviews = [
-    { name: "Nusrat Jahan", role: "Mother of 2", text: "Care.xyz helped me find a wonderful babysitter within hours. My kids love her!", avatar: "https://randomuser.me/api/portraits/women/44.jpg", rating: 5 },
-    { name: "Karim Uddin", role: "Son of elderly parent", text: "My father gets the best care every day. The caretaker is professional and kind.", avatar: "https://randomuser.me/api/portraits/men/32.jpg", rating: 5 },
-    { name: "Sumaiya Akter", role: "Working professional", text: "I can focus on work knowing my mother is in safe hands. Highly recommended!", avatar: "https://randomuser.me/api/portraits/women/68.jpg", rating: 5 },
-];
-
 const steps = [
     { step: "01", title: "Choose a Service", desc: "Browse Baby Care, Elderly Care, or Sick Care services." },
     { step: "02", title: "Book Your Slot", desc: "Select duration, location, and confirm your booking instantly." },
@@ -66,6 +60,8 @@ const steps = [
 ];
 
 export default function HomePage() {
+    const [reviews, setReviews] = useState([]);
+
     const [heroRef, heroIn] = useInView(0.1);
     const [statsRef, statsIn] = useInView();
     const [servicesRef, servicesIn] = useInView();
@@ -73,17 +69,22 @@ export default function HomePage() {
     const [reviewsRef, reviewsIn] = useInView();
     const [ctaRef, ctaIn] = useInView();
 
+    useEffect(() => {
+        fetch("/api/reviews")
+            .then(res => res.json())
+            .then(data => setReviews(data.slice(0, 3)))
+            .catch(err => console.error("Failed to fetch reviews:", err));
+    }, []);
+
     return (
         <div className="overflow-x-hidden">
 
             {/* ── HERO ── */}
             <section className="relative min-h-[92vh] flex items-center bg-background overflow-hidden">
-                {/* decorative blobs */}
                 <div className="absolute top-[-80px] right-[-80px] w-[420px] h-[420px] rounded-full bg-primary opacity-10 blur-3xl" />
                 <div className="absolute bottom-[-60px] left-[-60px] w-[320px] h-[320px] rounded-full bg-accent opacity-20 blur-3xl" />
 
                 <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center py-20">
-                    {/* Text */}
                     <div
                         ref={heroRef}
                         style={{
@@ -117,7 +118,6 @@ export default function HomePage() {
                             </Link>
                         </div>
 
-                        {/* mini trust badges */}
                         <div className="flex items-center gap-4 mt-8">
                             <div className="flex -space-x-2">
                                 {["women/44", "men/32", "women/68", "men/12"].map((p, i) => (
@@ -137,7 +137,6 @@ export default function HomePage() {
                         </div>
                     </div>
 
-                    {/* Hero Image */}
                     <div
                         style={{
                             opacity: heroIn ? 1 : 0,
@@ -155,8 +154,7 @@ export default function HomePage() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                         </div>
-                        {/* floating card */}
-                        <div className="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
+                        <div className="absolute -bottom-5 -left-5 bg-white dark:bg-[#1A2E1E] rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
                             <span className="text-3xl">⭐</span>
                             <div>
                                 <p className="font-bold text-gray-800 text-sm">4.9 / 5 Rating</p>
@@ -203,10 +201,7 @@ export default function HomePage() {
                         <p className="text-muted mt-3 max-w-xl mx-auto">Professional, verified, and compassionate care for every member of your family.</p>
                     </div>
 
-                    <div
-                        ref={servicesRef}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                    >
+                    <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {services.map((s, i) => (
                             <div
                                 key={s.id}
@@ -215,7 +210,7 @@ export default function HomePage() {
                                     transform: servicesIn ? "translateY(0)" : "translateY(40px)",
                                     transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
                                 }}
-                                className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group"
+                                className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group"
                             >
                                 <div className="relative h-48 overflow-hidden">
                                     <Image
@@ -247,16 +242,13 @@ export default function HomePage() {
             </section>
 
             {/* ── HOW IT WORKS ── */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-white dark:bg-[#1A2E1E]">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-12">
                         <span className="text-xs font-semibold uppercase tracking-widest text-primary">Simple Process</span>
                         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">How It Works</h2>
                     </div>
-                    <div
-                        ref={stepsRef}
-                        className="grid grid-cols-1 md:grid-cols-4 gap-8"
-                    >
+                    <div ref={stepsRef} className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         {steps.map((s, i) => (
                             <div
                                 key={i}
@@ -318,47 +310,64 @@ export default function HomePage() {
             </section>
 
             {/* ── TESTIMONIALS ── */}
-            <section className="py-20 bg-white">
+            <section className="py-20 bg-white dark:bg-[#1A2E1E]">
                 <div className="max-w-7xl mx-auto px-4">
                     <div className="text-center mb-12">
                         <span className="text-xs font-semibold uppercase tracking-widest text-primary">Real Stories</span>
                         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">What Families Say</h2>
                     </div>
-                    <div
-                        ref={reviewsRef}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                    >
-                        {reviews.map((r, i) => (
-                            <div
-                                key={i}
-                                style={{
-                                    opacity: reviewsIn ? 1 : 0,
-                                    transform: reviewsIn ? "translateY(0)" : "translateY(40px)",
-                                    transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
-                                }}
-                                className="bg-background rounded-3xl p-6 shadow-sm hover:shadow-md transition"
-                            >
-                                <div className="flex gap-1 mb-3">
-                                    {Array(r.rating).fill(0).map((_, j) => (
-                                        <span key={j} className="text-accent text-lg">★</span>
-                                    ))}
-                                </div>
-                                <p className="text-gray-700 text-sm leading-relaxed mb-4">"{r.text}"</p>
-                                <div className="flex items-center gap-3">
-                                    <Image
-                                        src={r.avatar}
-                                        alt={r.name}
-                                        width={44}
-                                        height={44}
-                                        className="rounded-full"
-                                    />
-                                    <div>
-                                        <p className="font-semibold text-gray-900 text-sm">{r.name}</p>
-                                        <p className="text-xs text-muted">{r.role}</p>
+                    <div ref={reviewsRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {reviews.length === 0 ? (
+                            // skeleton loading
+                            [1, 2, 3].map(i => (
+                                <div key={i} className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 animate-pulse">
+                                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-3 w-24" />
+                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-2 w-3/4" />
+                                    <div className="flex items-center gap-3 mt-4">
+                                        <div className="w-11 h-11 rounded-full bg-gray-200 dark:bg-gray-700" />
+                                        <div>
+                                            <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-24 mb-1" />
+                                            <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-16" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            reviews.map((r, i) => (
+                                <div
+                                    key={r.id}
+                                    style={{
+                                        opacity: reviewsIn ? 1 : 0,
+                                        transform: reviewsIn ? "translateY(0)" : "translateY(40px)",
+                                        transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
+                                    }}
+                                    className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 shadow-sm hover:shadow-md transition"
+                                >
+                                    <div className="flex gap-1 mb-3">
+                                        {Array(r.ratings).fill(0).map((_, j) => (
+                                            <span key={j} className="text-accent text-lg">★</span>
+                                        ))}
+                                    </div>
+                                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                                        "{r.review}"
+                                    </p>
+                                    <div className="flex items-center gap-3">
+                                        <Image
+                                            src={r.user_photoURL}
+                                            alt={r.userName}
+                                            width={44}
+                                            height={44}
+                                            className="rounded-full"
+                                        />
+                                        <div>
+                                            <p className="font-semibold text-gray-900 text-sm">{r.userName}</p>
+                                            <p className="text-xs text-muted">{r.role}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 </div>
             </section>
