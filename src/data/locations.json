@@ -1,138 +1,476 @@
 {
-    "Dhaka": {
-        "Dhaka": {
-            "Dhaka North": [
+    "Dhaka": [
+        {
+            "district": "Dhaka",
+            "cities": [
+                "Dhaka",
+                "Dhanmondi",
                 "Gulshan",
-                "Banani",
-                "Uttara",
                 "Mirpur",
-                "Mohakhali"
-            ],
-            "Dhaka South": [
-                "Old Dhaka",
-                "Lalbagh",
-                "Hazaribagh",
-                "Kotwali",
-                "Sutrapur"
+                "Uttara"
             ]
         },
-        "Gazipur": {
-            "Gazipur Sadar": [
+        {
+            "district": "Gazipur",
+            "cities": [
+                "Gazipur",
                 "Tongi",
-                "Joydebpur",
-                "Konabari",
-                "Basan",
+                "Sreepur",
+                "Kaliakair"
+            ]
+        },
+        {
+            "district": "Narayanganj",
+            "cities": [
+                "Narayanganj",
+                "Sonargaon",
+                "Rupganj"
+            ]
+        },
+        {
+            "district": "Manikganj",
+            "cities": [
+                "Manikganj",
+                "Singair"
+            ]
+        },
+        {
+            "district": "Munshiganj",
+            "cities": [
+                "Munshiganj",
+                "Sreenagar",
+                "Tongibari"
+            ]
+        },
+        {
+            "district": "Narsingdi",
+            "cities": [
+                "Narsingdi",
+                "Madhabdi",
+                "Raipura"
+            ]
+        },
+        {
+            "district": "Faridpur",
+            "cities": [
+                "Faridpur",
+                "Bhanga"
+            ]
+        },
+        {
+            "district": "Gopalganj",
+            "cities": [
+                "Gopalganj",
+                "Tungipara"
+            ]
+        },
+        {
+            "district": "Madaripur",
+            "cities": [
+                "Madaripur",
+                "Shibchar"
+            ]
+        },
+        {
+            "district": "Rajbari",
+            "cities": [
+                "Rajbari",
+                "Goalanda"
+            ]
+        },
+        {
+            "district": "Shariatpur",
+            "cities": [
+                "Shariatpur",
+                "Naria"
+            ]
+        },
+        {
+            "district": "Kishoreganj",
+            "cities": [
+                "Kishoreganj",
+                "Bhairab"
+            ]
+        },
+        {
+            "district": "Tangail",
+            "cities": [
+                "Tangail",
+                "Madhupur"
+            ]
+        }
+    ],
+    "Chattogram": [
+        {
+            "district": "Chattogram",
+            "cities": [
+                "Chattogram",
+                "Patiya",
+                "Sitakunda"
+            ]
+        },
+        {
+            "district": "Cox's Bazar",
+            "cities": [
+                "Cox's Bazar",
+                "Teknaf",
+                "Ukhiya"
+            ]
+        },
+        {
+            "district": "Comilla",
+            "cities": [
+                "Comilla",
+                "Daudkandi"
+            ]
+        },
+        {
+            "district": "Brahmanbaria",
+            "cities": [
+                "Brahmanbaria",
+                "Ashuganj"
+            ]
+        },
+        {
+            "district": "Chandpur",
+            "cities": [
+                "Chandpur",
+                "Haimchar"
+            ]
+        },
+        {
+            "district": "Feni",
+            "cities": [
+                "Feni",
+                "Chhagalnaiya"
+            ]
+        },
+        {
+            "district": "Noakhali",
+            "cities": [
+                "Noakhali",
+                "Maijdee"
+            ]
+        },
+        {
+            "district": "Lakshmipur",
+            "cities": [
+                "Lakshmipur",
+                "Ramganj"
+            ]
+        },
+        {
+            "district": "Khagrachari",
+            "cities": [
+                "Khagrachari",
+                "Dighinala"
+            ]
+        },
+        {
+            "district": "Rangamati",
+            "cities": [
+                "Rangamati",
+                "Kaptai"
+            ]
+        },
+        {
+            "district": "Bandarban",
+            "cities": [
+                "Bandarban",
+                "Thanchi"
+            ]
+        }
+    ],
+    "Khulna": [
+        {
+            "district": "Khulna",
+            "cities": [
+                "Khulna",
+                "Batiaghata"
+            ]
+        },
+        {
+            "district": "Jessore",
+            "cities": [
+                "Jessore",
+                "Benapole"
+            ]
+        },
+        {
+            "district": "Satkhira",
+            "cities": [
+                "Satkhira",
+                "Shyamnagar"
+            ]
+        },
+        {
+            "district": "Bagerhat",
+            "cities": [
+                "Bagerhat",
+                "Mongla"
+            ]
+        },
+        {
+            "district": "Narail",
+            "cities": [
+                "Narail",
+                "Kalia"
+            ]
+        },
+        {
+            "district": "Magura",
+            "cities": [
+                "Magura",
+                "Sreepur"
+            ]
+        },
+        {
+            "district": "Jhenaidah",
+            "cities": [
+                "Jhenaidah",
                 "Kaliganj"
             ]
         },
-        "Narayanganj": {
-            "Narayanganj Sadar": [
-                "Fatullah",
-                "Siddhirganj",
-                "Bandar",
-                "Rupganj"
-            ]
-        }
-    },
-    "Chattogram": {
-        "Chattogram": {
-            "Chattogram City": [
-                "Agrabad",
-                "GEC",
-                "Halishahar",
-                "Panchlaish",
-                "Khulshi"
-            ],
-            "Sitakunda": [
-                "Sitakunda Sadar",
-                "Barabkunda",
-                "Kumira"
+        {
+            "district": "Kushtia",
+            "cities": [
+                "Kushtia",
+                "Bheramara"
             ]
         },
-        "Cox's Bazar": {
-            "Cox's Bazar Sadar": [
-                "Cox's Bazar Town",
-                "Teknaf",
-                "Ukhia"
-            ]
-        }
-    },
-    "Khulna": {
-        "Khulna": {
-            "Khulna City": [
-                "Sonadanga",
-                "Khalishpur",
-                "Daulatpur",
-                "Rupsha"
+        {
+            "district": "Chuadanga",
+            "cities": [
+                "Chuadanga",
+                "Alamdanga"
             ]
         },
-        "Jessore": {
-            "Jessore Sadar": [
-                "Jessore Town",
-                "Jhikargacha",
-                "Sharsha"
+        {
+            "district": "Meherpur",
+            "cities": [
+                "Meherpur",
+                "Gangni"
             ]
         }
-    },
-    "Rajshahi": {
-        "Rajshahi": {
-            "Rajshahi City": [
-                "Boalia",
-                "Motihar",
-                "Rajpara",
-                "Shah Makhdum"
+    ],
+    "Rajshahi": [
+        {
+            "district": "Rajshahi",
+            "cities": [
+                "Rajshahi",
+                "Godagari"
             ]
         },
-        "Bogura": {
-            "Bogura Sadar": [
-                "Bogura Town",
-                "Sherpur",
+        {
+            "district": "Natore",
+            "cities": [
+                "Natore",
+                "Singra"
+            ]
+        },
+        {
+            "district": "Naogaon",
+            "cities": [
+                "Naogaon",
+                "Sapahar"
+            ]
+        },
+        {
+            "district": "Chapainawabganj",
+            "cities": [
+                "Chapainawabganj",
                 "Shibganj"
             ]
-        }
-    },
-    "Barisal": {
-        "Barisal": {
-            "Barisal City": [
-                "Kotwali",
-                "Bandhar",
-                "Barisal Sadar"
-            ]
-        }
-    },
-    "Sylhet": {
-        "Sylhet": {
-            "Sylhet City": [
-                "Sylhet Sadar",
-                "Amberkhana",
-                "Zindabazar",
-                "Uposhahar"
+        },
+        {
+            "district": "Pabna",
+            "cities": [
+                "Pabna",
+                "Ishwardi"
             ]
         },
-        "Moulvibazar": {
-            "Moulvibazar Sadar": [
-                "Moulvibazar Town",
-                "Sreemangal",
-                "Kamalganj"
+        {
+            "district": "Sirajganj",
+            "cities": [
+                "Sirajganj",
+                "Belkuchi"
+            ]
+        },
+        {
+            "district": "Bogura",
+            "cities": [
+                "Bogura",
+                "Sherpur"
+            ]
+        },
+        {
+            "district": "Joypurhat",
+            "cities": [
+                "Joypurhat",
+                "Akkelpur"
             ]
         }
-    },
-    "Rangpur": {
-        "Rangpur": {
-            "Rangpur City": [
-                "Rangpur Sadar",
-                "Mahiganj",
-                "Gangachhara"
+    ],
+    "Barisal": [
+        {
+            "district": "Barisal",
+            "cities": [
+                "Barisal",
+                "Bakerganj"
+            ]
+        },
+        {
+            "district": "Bhola",
+            "cities": [
+                "Bhola",
+                "Char Fasson"
+            ]
+        },
+        {
+            "district": "Patuakhali",
+            "cities": [
+                "Patuakhali",
+                "Kuakata"
+            ]
+        },
+        {
+            "district": "Pirojpur",
+            "cities": [
+                "Pirojpur",
+                "Mathbaria"
+            ]
+        },
+        {
+            "district": "Jhalokathi",
+            "cities": [
+                "Jhalokathi",
+                "Nalchity"
+            ]
+        },
+        {
+            "district": "Barguna",
+            "cities": [
+                "Barguna",
+                "Patharghata"
             ]
         }
-    },
-    "Mymensingh": {
-        "Mymensingh": {
-            "Mymensingh City": [
-                "Mymensingh Sadar",
-                "Trishal",
-                "Bhaluka"
+    ],
+    "Sylhet": [
+        {
+            "district": "Sylhet",
+            "cities": [
+                "Sylhet",
+                "Beanibazar"
+            ]
+        },
+        {
+            "district": "Moulvibazar",
+            "cities": [
+                "Moulvibazar",
+                "Sreemangal"
+            ]
+        },
+        {
+            "district": "Habiganj",
+            "cities": [
+                "Habiganj",
+                "Madhabpur"
+            ]
+        },
+        {
+            "district": "Sunamganj",
+            "cities": [
+                "Sunamganj",
+                "Tahirpur"
             ]
         }
-    }
+    ],
+    "Rangpur": [
+        {
+            "district": "Rangpur",
+            "cities": [
+                "Rangpur",
+                "Badarganj"
+            ]
+        },
+        {
+            "district": "Dinajpur",
+            "cities": [
+                "Dinajpur",
+                "Parbatipur"
+            ]
+        },
+        {
+            "district": "Kurigram",
+            "cities": [
+                "Kurigram",
+                "Nageshwari"
+            ]
+        },
+        {
+            "district": "Gaibandha",
+            "cities": [
+                "Gaibandha",
+                "Gobindaganj"
+            ]
+        },
+        {
+            "district": "Lalmonirhat",
+            "cities": [
+                "Lalmonirhat",
+                "Patgram"
+            ]
+        },
+        {
+            "district": "Nilphamari",
+            "cities": [
+                "Nilphamari",
+                "Saidpur"
+            ]
+        },
+        {
+            "district": "Thakurgaon",
+            "cities": [
+                "Thakurgaon",
+                "Pirganj"
+            ]
+        },
+        {
+            "district": "Panchagarh",
+            "cities": [
+                "Panchagarh",
+                "Tetulia"
+            ]
+        }
+    ],
+    "Mymensingh": [
+        {
+            "district": "Mymensingh",
+            "cities": [
+                "Mymensingh",
+                "Trishal"
+            ]
+        },
+        {
+            "district": "Jamalpur",
+            "cities": [
+                "Jamalpur",
+                "Sarishabari"
+            ]
+        },
+        {
+            "district": "Sherpur",
+            "cities": [
+                "Sherpur",
+                "Nalitabari"
+            ]
+        },
+        {
+            "district": "Netrokona",
+            "cities": [
+                "Netrokona",
+                "Madan"
+            ]
+        }
+    ]
 }

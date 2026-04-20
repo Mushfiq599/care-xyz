@@ -30,14 +30,15 @@ export default function BookingPage() {
     const [division, setDivision] = useState("");
     const [district, setDistrict] = useState("");
     const [city, setCity] = useState("");
-    const [area, setArea] = useState("");
     const [address, setAddress] = useState("");
 
     // Derived location options
-    const districts = division ? Object.keys(locationData[division] || {}) : [];
-    const cities = district ? Object.keys(locationData[division]?.[district] || {}) : [];
-    const areas = city ? locationData[division]?.[district]?.[city] || [] : [];
-
+    const districts = division
+        ? (locationData[division] || []).map(d => d.district)
+        : [];
+    const cities = district
+        ? (locationData[division] || []).find(d => d.district === district)?.cities || []
+        : [];
     // Total cost (1 day = 8 hours)
     const multiplier = durationType === "days" ? 8 : 1;
     const totalCost = service ? duration * service.charge * multiplier : 0;
@@ -91,7 +92,7 @@ export default function BookingPage() {
                 return setError("Please enter a valid duration.");
         }
         if (step === 1) {
-            if (!division || !district || !city || !area || !address.trim())
+            if (!division || !district || !city || !address.trim())
                 return setError("Please fill in all location fields.");
         }
         setError("");
@@ -110,7 +111,7 @@ export default function BookingPage() {
                     serviceName: service.title,
                     duration,
                     durationType,
-                    location: { division, district, city, area, address },
+                    location: { division, district, city, address },
                     totalCost,
                 }),
             });
@@ -154,7 +155,7 @@ export default function BookingPage() {
                         {[
                             { label: "Service", value: `${service.icon} ${service.title}` },
                             { label: "Duration", value: `${duration} ${durationType}` },
-                            { label: "Location", value: `${area}, ${city}, ${district}` },
+                            { label: "Location", value: `${city}, ${district}, ${division}` },
                             { label: "Total Cost", value: `৳${totalCost}` },
                             { label: "Status", value: "⏳ Pending" },
                         ].map((item, i) => (
@@ -197,10 +198,10 @@ export default function BookingPage() {
                     {STEPS.map((s, i) => (
                         <div key={i} className="flex items-center">
                             <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${i === step
-                                    ? "bg-primary text-white shadow-lg"
-                                    : i < step
-                                        ? "bg-green-100 text-primary dark:bg-green-900"
-                                        : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
+                                ? "bg-primary text-white shadow-lg"
+                                : i < step
+                                    ? "bg-green-100 text-primary dark:bg-green-900"
+                                    : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
                                 }`}>
                                 <span>{i < step ? "✓" : i + 1}</span>
                                 <span className="hidden sm:inline">{s}</span>
@@ -241,8 +242,8 @@ export default function BookingPage() {
                                             key={type}
                                             onClick={() => { setDurationType(type); setDuration(1); }}
                                             className={`py-4 rounded-2xl font-semibold border-2 transition capitalize text-sm ${durationType === type
-                                                    ? "border-primary bg-primary/10 text-primary"
-                                                    : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600 dark:text-gray-400"
+                                                ? "border-primary bg-primary/10 text-primary"
+                                                : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600 dark:text-gray-400"
                                                 }`}
                                         >
                                             {type === "hours" ? "⏰ Hours" : "📅 Days"}
@@ -357,23 +358,7 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
-                            {/* Area */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Area
-                                </label>
-                                <select
-                                    value={area}
-                                    onChange={e => setArea(e.target.value)}
-                                    disabled={!city}
-                                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
-                                >
-                                    <option value="">Select Area</option>
-                                    {areas.map(a => (
-                                        <option key={a} value={a}>{a}</option>
-                                    ))}
-                                </select>
-                            </div>
+
 
                             {/* Full Address */}
                             <div>
@@ -405,7 +390,6 @@ export default function BookingPage() {
                                     { label: "Division", value: division },
                                     { label: "District", value: district },
                                     { label: "City", value: city },
-                                    { label: "Area", value: area },
                                     { label: "Address", value: address },
                                 ].map((item, i) => (
                                     <div key={i} className="flex justify-between items-start py-3">

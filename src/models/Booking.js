@@ -11,7 +11,6 @@ const BookingSchema = new mongoose.Schema({
         division: { type: String, required: true },
         district: { type: String, required: true },
         city: { type: String, required: true },
-        area: { type: String, required: true },
         address: { type: String, required: true },
     },
     totalCost: { type: Number, required: true },
