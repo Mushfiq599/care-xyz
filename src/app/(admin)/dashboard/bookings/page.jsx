@@ -92,8 +92,8 @@ export default function AdminBookingsPage() {
                         key={f}
                         onClick={() => setFilter(f)}
                         className={`px-4 py-2 rounded-xl text-sm font-semibold capitalize transition ${filter === f
-                                ? "bg-primary text-white"
-                                : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                            ? "bg-primary text-white"
+                            : "bg-gray-800 text-gray-400 hover:bg-gray-700"
                             }`}
                     >
                         {f} {f === "all" ? `(${bookings.length})` : `(${bookings.filter(b => b.status === f).length})`}
@@ -112,6 +112,7 @@ export default function AdminBookingsPage() {
                                 <th className="px-6 py-3 font-medium">Duration</th>
                                 <th className="px-6 py-3 font-medium">Location</th>
                                 <th className="px-6 py-3 font-medium">Cost</th>
+                                <th className="px-6 py-3 font-medium">Payment</th>
                                 <th className="px-6 py-3 font-medium">Date</th>
                                 <th className="px-6 py-3 font-medium">Status</th>
                                 <th className="px-6 py-3 font-medium">Action</th>
@@ -127,6 +128,14 @@ export default function AdminBookingsPage() {
                                         <td className="px-6 py-4 text-gray-400">{b.duration} {b.durationType}</td>
                                         <td className="px-6 py-4 text-gray-400">{b.location?.district}, {b.location?.division}</td>
                                         <td className="px-6 py-4 text-primary font-bold">৳{b.totalCost}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
+                                                    ? "bg-green-900/30 text-green-400"
+                                                    : "bg-gray-800 text-gray-400"
+                                                }`}>
+                                                {b.paymentStatus === "paid" ? "💳 Paid" : "⏳ Unpaid"}
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4 text-gray-400">{formatDate(b.createdAt)}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color}`}>

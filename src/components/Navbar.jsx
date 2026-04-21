@@ -31,7 +31,7 @@ export default function Navbar() {
                     )}
                     {session?.user?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL && (
                         <Link href="/dashboard" className="hover:text-primary transition text-accent font-bold">
-                            Admin ⚡
+                            Admin Panel⚡
                         </Link>
                     )}
                 </div>

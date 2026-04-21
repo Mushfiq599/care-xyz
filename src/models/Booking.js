@@ -19,6 +19,13 @@ const BookingSchema = new mongoose.Schema({
         enum: ["pending", "confirmed", "completed", "cancelled"],
         default: "pending",
     },
+    paymentIntentId: { type: String },
+    paymentStatus: {
+        type: String,
+        enum: ["unpaid", "paid"],
+        default: "unpaid",
+    },
 }, { timestamps: true });
 
-export default mongoose.models.Booking || mongoose.model("Booking", BookingSchema);
+export default mongoose.models.Booking ||
+    mongoose.model("Booking", BookingSchema);

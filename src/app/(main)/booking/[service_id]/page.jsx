@@ -2,12 +2,19 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentForm from "@/components/PaymentForm";
 import {
     FiClock, FiMapPin, FiDollarSign,
-    FiCheckCircle, FiAlertCircle, FiLoader
+    FiCheckCircle, FiAlertCircle, FiLoader, FiLock
 } from "react-icons/fi";
 
-const STEPS = ["Duration", "Location", "Review & Confirm"];
+const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
+
+const STEPS = ["Duration", "Location", "Review & Pay"];
 
 export default function BookingPage() {
     const { data: session, status } = useSession();
@@ -18,10 +25,12 @@ export default function BookingPage() {
     const [service, setService] = useState(null);
     const [locationData, setLocationData] = useState({});
     const [pageLoading, setPageLoading] = useState(true);
+    const [clientSecret, setClientSecret] = useState("");
+    const [creatingIntent, setCreatingIntent] = useState(false);
 
     const [step, setStep] = useState(0);
-    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [paymentIntentId, setPaymentIntentId] = useState("");
     const [error, setError] = useState("");
 
     // Form state
@@ -39,9 +48,20 @@ export default function BookingPage() {
     const cities = district
         ? (locationData[division] || []).find(d => d.district === district)?.cities || []
         : [];
-    // Total cost (1 day = 8 hours)
+
+    // Total cost
     const multiplier = durationType === "days" ? 8 : 1;
     const totalCost = service ? duration * service.charge * multiplier : 0;
+
+    // Booking data to pass to payment form
+    const bookingData = {
+        serviceId,
+        serviceName: service?.title,
+        duration,
+        durationType,
+        location: { division, district, city, address },
+        totalCost,
+    };
 
     // Resolve params
     useEffect(() => {
@@ -71,10 +91,7 @@ export default function BookingPage() {
                 const services = await servicesRes.json();
                 const locations = await locationsRes.json();
                 const found = services.find(s => s.id === serviceId);
-                if (!found) {
-                    router.push("/");
-                    return;
-                }
+                if (!found) { router.push("/"); return; }
                 setService(found);
                 setLocationData(locations);
             } catch (err) {
@@ -87,52 +104,51 @@ export default function BookingPage() {
     }, [serviceId]);
 
     const handleNext = () => {
-        if (step === 0) {
-            if (!duration || duration < 1)
-                return setError("Please enter a valid duration.");
-        }
-        if (step === 1) {
-            if (!division || !district || !city || !address.trim())
-                return setError("Please fill in all location fields.");
-        }
+        if (step === 0 && (!duration || duration < 1))
+            return setError("Please enter a valid duration.");
+        if (step === 1 && (!division || !district || !city || !address.trim()))
+            return setError("Please fill in all location fields.");
         setError("");
         setStep(s => s + 1);
     };
 
-    const handleConfirm = async () => {
-        setLoading(true);
-        setError("");
-        try {
-            const res = await fetch("/api/bookings", {
+    // Create payment intent when reaching step 2
+    useEffect(() => {
+        if (step === 2 && !clientSecret && service) {
+            setCreatingIntent(true);
+            fetch("/api/payments/create-intent", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    serviceId,
-                    serviceName: service.title,
-                    duration,
-                    durationType,
-                    location: { division, district, city, address },
                     totalCost,
+                    serviceName: service.title,
                 }),
-            });
-            const data = await res.json();
-            if (!res.ok) return setError(data.message || "Booking failed.");
-            setSuccess(true);
-        } catch {
-            setError("Something went wrong. Please try again.");
-        } finally {
-            setLoading(false);
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setClientSecret(data.clientSecret);
+                    setCreatingIntent(false);
+                })
+                .catch(() => {
+                    setError("Failed to initialize payment. Please try again.");
+                    setCreatingIntent(false);
+                });
         }
+    }, [step, service]);
+
+    const handlePaymentSuccess = (intentId) => {
+        setPaymentIntentId(intentId);
+        setSuccess(true);
     };
 
-    // Loading screen
+    const handlePaymentError = (msg) => {
+        setError(msg);
+    };
+
     if (status === "loading" || pageLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="text-center">
-                    <FiLoader className="animate-spin text-primary text-4xl mx-auto mb-4" />
-                    <p className="text-muted">Loading booking details...</p>
-                </div>
+                <FiLoader className="animate-spin text-primary text-4xl" />
             </div>
         );
     }
@@ -146,24 +162,23 @@ export default function BookingPage() {
                         <FiCheckCircle className="text-primary text-4xl" />
                     </div>
                     <h2 className="text-2xl font-extrabold text-gray-900 mb-2">
-                        Booking Confirmed! 🎉
+                        Payment Successful! 🎉
                     </h2>
                     <p className="text-muted mb-6">
-                        Your booking has been submitted successfully.
+                        Your booking has been confirmed and payment received.
                     </p>
                     <div className="bg-background dark:bg-[#0F1A12] rounded-2xl p-5 text-left space-y-3 mb-6">
                         {[
                             { label: "Service", value: `${service.icon} ${service.title}` },
                             { label: "Duration", value: `${duration} ${durationType}` },
-                            { label: "Location", value: `${city}, ${district}, ${division}` },
-                            { label: "Total Cost", value: `৳${totalCost}` },
+                            { label: "Location", value: `${city}, ${district}` },
+                            { label: "Total Paid", value: `৳${totalCost}` },
+                            { label: "Payment", value: "✅ Paid via Stripe" },
                             { label: "Status", value: "⏳ Pending" },
                         ].map((item, i) => (
                             <div key={i} className="flex justify-between items-center">
                                 <span className="text-sm text-muted">{item.label}</span>
-                                <span className="text-sm font-semibold text-gray-900">
-                                    {item.value}
-                                </span>
+                                <span className="text-sm font-semibold text-gray-900">{item.value}</span>
                             </div>
                         ))}
                     </div>
@@ -198,10 +213,10 @@ export default function BookingPage() {
                     {STEPS.map((s, i) => (
                         <div key={i} className="flex items-center">
                             <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${i === step
-                                ? "bg-primary text-white shadow-lg"
-                                : i < step
-                                    ? "bg-green-100 text-primary dark:bg-green-900"
-                                    : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
+                                    ? "bg-primary text-white shadow-lg"
+                                    : i < step
+                                        ? "bg-green-100 text-primary dark:bg-green-900"
+                                        : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
                                 }`}>
                                 <span>{i < step ? "✓" : i + 1}</span>
                                 <span className="hidden sm:inline">{s}</span>
@@ -214,36 +229,31 @@ export default function BookingPage() {
                     ))}
                 </div>
 
-                {/* Main Card */}
+                {/* Card */}
                 <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-lg p-8">
 
-                    {/* Error */}
                     {error && (
                         <div className="flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-xl p-4 mb-6 text-sm">
-                            <FiAlertCircle className="flex shrink-0" /> {error}
+                            <FiAlertCircle className="flex-shrink-0" /> {error}
                         </div>
                     )}
 
-                    {/* ── STEP 0: Duration ── */}
+                    {/* Step 0 — Duration */}
                     {step === 0 && (
                         <div className="space-y-6">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                                 <FiClock className="text-primary" /> Select Duration
                             </h2>
-
-                            {/* Type toggle */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                                    Duration Type
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Duration Type</label>
                                 <div className="grid grid-cols-2 gap-4">
                                     {["hours", "days"].map(type => (
                                         <button
                                             key={type}
                                             onClick={() => { setDurationType(type); setDuration(1); }}
                                             className={`py-4 rounded-2xl font-semibold border-2 transition capitalize text-sm ${durationType === type
-                                                ? "border-primary bg-primary/10 text-primary"
-                                                : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600 dark:text-gray-400"
+                                                    ? "border-primary bg-primary/10 text-primary"
+                                                    : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600"
                                                 }`}
                                         >
                                             {type === "hours" ? "⏰ Hours" : "📅 Days"}
@@ -251,8 +261,6 @@ export default function BookingPage() {
                                     ))}
                                 </div>
                             </div>
-
-                            {/* Amount */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     How many {durationType}?
@@ -265,48 +273,33 @@ export default function BookingPage() {
                                     onChange={e => setDuration(Math.max(1, Number(e.target.value)))}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 text-xl font-bold focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white text-center"
                                 />
-                                <p className="text-xs text-muted mt-1 text-center">
-                                    Max: {durationType === "hours" ? "24 hours" : "30 days"}
-                                </p>
                             </div>
-
-                            {/* Live cost preview */}
                             <div className="bg-background dark:bg-[#0F1A12] rounded-2xl p-5 flex items-center justify-between border border-cborder dark:border-gray-700">
                                 <div>
-                                    <p className="text-xs text-muted uppercase tracking-wide mb-1">
-                                        Estimated Total
-                                    </p>
+                                    <p className="text-xs text-muted uppercase tracking-wide mb-1">Estimated Total</p>
                                     <p className="text-4xl font-extrabold text-primary">৳{totalCost}</p>
                                 </div>
                                 <div className="text-right text-sm text-muted">
                                     <p className="font-medium">{duration} {durationType}</p>
                                     <p>× ৳{service?.charge}/hr</p>
-                                    {durationType === "days" && (
-                                        <p className="text-xs">× 8 hrs/day</p>
-                                    )}
+                                    {durationType === "days" && <p className="text-xs">× 8 hrs/day</p>}
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {/* ── STEP 1: Location ── */}
+                    {/* Step 1 — Location */}
                     {step === 1 && (
                         <div className="space-y-5">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                                 <FiMapPin className="text-primary" /> Select Location
                             </h2>
 
-                            {/* Division */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Division
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Division</label>
                                 <select
                                     value={division}
-                                    onChange={e => {
-                                        setDivision(e.target.value);
-                                        setDistrict(""); setCity(""); setArea("");
-                                    }}
+                                    onChange={e => { setDivision(e.target.value); setDistrict(""); setCity(""); }}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white"
                                 >
                                     <option value="">Select Division</option>
@@ -316,17 +309,11 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
-                            {/* District */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    District
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">District</label>
                                 <select
                                     value={district}
-                                    onChange={e => {
-                                        setDistrict(e.target.value);
-                                        setCity(""); setArea("");
-                                    }}
+                                    onChange={e => { setDistrict(e.target.value); setCity(""); }}
                                     disabled={!division}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
                                 >
@@ -337,17 +324,11 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
-                            {/* City */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    City
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City / Upazila</label>
                                 <select
                                     value={city}
-                                    onChange={e => {
-                                        setCity(e.target.value);
-                                        setArea("");
-                                    }}
+                                    onChange={e => setCity(e.target.value)}
                                     disabled={!district}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
                                 >
@@ -358,13 +339,8 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
-
-
-                            {/* Full Address */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Full Address
-                                </label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Address</label>
                                 <textarea
                                     value={address}
                                     onChange={e => setAddress(e.target.value)}
@@ -376,13 +352,14 @@ export default function BookingPage() {
                         </div>
                     )}
 
-                    {/* ── STEP 2: Review ── */}
+                    {/* Step 2 — Review & Pay */}
                     {step === 2 && (
-                        <div className="space-y-5">
+                        <div className="space-y-6">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                                <FiDollarSign className="text-primary" /> Review & Confirm
+                                <FiDollarSign className="text-primary" /> Review & Pay
                             </h2>
 
+                            {/* Summary */}
                             <div className="divide-y divide-cborder dark:divide-gray-700">
                                 {[
                                     { label: "Service", value: `${service.icon} ${service.title}` },
@@ -394,63 +371,80 @@ export default function BookingPage() {
                                 ].map((item, i) => (
                                     <div key={i} className="flex justify-between items-start py-3">
                                         <span className="text-sm text-muted">{item.label}</span>
-                                        <span className="text-sm font-semibold text-gray-900 text-right max-w-[60%]">
-                                            {item.value}
-                                        </span>
+                                        <span className="text-sm font-semibold text-gray-900 text-right max-w-[60%]">{item.value}</span>
                                     </div>
                                 ))}
                             </div>
 
-                            {/* Total cost */}
-                            <div className="bg-primary/10 dark:bg-primary/20 rounded-2xl p-6 flex items-center justify-between mt-2">
+                            {/* Total */}
+                            <div className="bg-primary/10 dark:bg-primary/20 rounded-2xl p-5 flex items-center justify-between">
                                 <div>
-                                    <p className="text-xs text-muted uppercase tracking-wide mb-1">Total Cost</p>
+                                    <p className="text-xs text-muted uppercase tracking-wide mb-1">Total Amount</p>
                                     <p className="text-4xl font-extrabold text-primary">৳{totalCost}</p>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-xs text-muted mb-2">Booking Status</p>
-                                    <span className="bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400 px-4 py-2 rounded-full font-semibold text-sm">
-                                        ⏳ Pending
-                                    </span>
-                                </div>
+                                <FiLock className="text-primary text-3xl opacity-50" />
                             </div>
 
-                            <p className="text-xs text-muted text-center">
-                                By confirming, you agree to our terms of service.
-                            </p>
+                            {/* Stripe Payment Form */}
+                            {creatingIntent ? (
+                                <div className="flex items-center justify-center py-8 gap-3 text-muted">
+                                    <FiLoader className="animate-spin text-primary text-2xl" />
+                                    <span>Initializing secure payment...</span>
+                                </div>
+                            ) : clientSecret ? (
+                                <Elements
+                                    stripe={stripePromise}
+                                    options={{
+                                        clientSecret,
+                                        appearance: {
+                                            theme: "stripe",
+                                            variables: {
+                                                colorPrimary: "#16A34A",
+                                                colorBackground: "#ffffff",
+                                                borderRadius: "12px",
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <PaymentForm
+                                        bookingData={bookingData}
+                                        onSuccess={handlePaymentSuccess}
+                                        onError={handlePaymentError}
+                                    />
+                                </Elements>
+                            ) : null}
                         </div>
                     )}
 
-                    {/* Navigation Buttons */}
-                    <div className="flex gap-4 mt-8">
-                        {step > 0 && (
-                            <button
-                                onClick={() => { setStep(s => s - 1); setError(""); }}
-                                className="flex-1 py-3 border-2 border-cborder dark:border-gray-600 rounded-2xl font-semibold text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition"
-                            >
-                                ← Back
-                            </button>
-                        )}
-                        {step < STEPS.length - 1 ? (
+                    {/* Navigation buttons — only show for steps 0 and 1 */}
+                    {step < 2 && (
+                        <div className="flex gap-4 mt-8">
+                            {step > 0 && (
+                                <button
+                                    onClick={() => { setStep(s => s - 1); setError(""); }}
+                                    className="flex-1 py-3 border-2 border-cborder dark:border-gray-600 rounded-2xl font-semibold text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition"
+                                >
+                                    ← Back
+                                </button>
+                            )}
                             <button
                                 onClick={handleNext}
-                                className="flex-1 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200"
+                                className="flex-1 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg"
                             >
                                 Next →
                             </button>
-                        ) : (
-                            <button
-                                onClick={handleConfirm}
-                                disabled={loading}
-                                className="flex-1 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
-                            >
-                                {loading
-                                    ? <><FiLoader className="animate-spin" /> Processing...</>
-                                    : "✓ Confirm Booking"
-                                }
-                            </button>
-                        )}
-                    </div>
+                        </div>
+                    )}
+
+                    {/* Back button on payment step */}
+                    {step === 2 && (
+                        <button
+                            onClick={() => { setStep(1); setClientSecret(""); setError(""); }}
+                            className="mt-4 w-full py-3 border-2 border-cborder dark:border-gray-600 rounded-2xl font-semibold text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition"
+                        >
+                            ← Back to Location
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
