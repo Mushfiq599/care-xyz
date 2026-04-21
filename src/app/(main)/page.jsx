@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 // Animation hook
 function useInView(threshold = 0.15) {
@@ -44,6 +45,7 @@ export default function HomePage() {
     const [reviewsRef, reviewsIn] = useInView();
     const [ctaRef, ctaIn] = useInView();
     const [services, setServices] = useState([]);
+    const { data: session } = useSession();
 
     useEffect(() => {
         fetch("/api/services")
@@ -93,12 +95,14 @@ export default function HomePage() {
                             >
                                 Explore Services
                             </Link>
-                            <Link
-                                href="/register"
-                                className="px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition"
-                            >
-                                Get Started Free
-                            </Link>
+                            {!session && (
+                                <Link
+                                    href="/register"
+                                    className="px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition"
+                                >
+                                    Get Started Free
+                                </Link>
+                            )}
                         </div>
 
                         <div className="flex items-center gap-4 mt-8">
