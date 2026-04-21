@@ -220,7 +220,7 @@ export default function BookingPage() {
                     {/* Error */}
                     {error && (
                         <div className="flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-xl p-4 mb-6 text-sm">
-                            <FiAlertCircle className="flex-shrink-0" /> {error}
+                            <FiAlertCircle className="flex shrink-0" /> {error}
                         </div>
                     )}
 

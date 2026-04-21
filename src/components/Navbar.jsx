@@ -22,8 +22,8 @@ export default function Navbar() {
                 {/* Desktop Nav Links */}
                 <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
                     <Link href="/" className="hover:text-primary transition">Home</Link>
-                    <Link href="/#services" className="hover:text-primary transition">Services</Link>
-                    <Link href="/#about" className="hover:text-primary transition">About</Link>
+                    <Link href="/services" className="hover:text-primary transition">Services</Link>
+                    <Link href="/about" className="hover:text-primary transition">About</Link>
                     {session && (
                         <Link href="/my-bookings" className="hover:text-primary transition">
                             My Bookings
@@ -109,8 +109,8 @@ export default function Navbar() {
             {menuOpen && (
                 <div className="md:hidden bg-white border-t border-cborder px-4 py-4 space-y-3">
                     <Link href="/" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>Home</Link>
-                    <Link href="/#services" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>Services</Link>
-                    <Link href="/#about" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>About</Link>
+                    <Link href="/services" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>Services</Link>
+                    <Link href="/about" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>About</Link>
                     {session && (
                         <Link href="/my-bookings" className="block text-sm font-medium hover:text-primary" onClick={() => setMenuOpen(false)}>My Bookings</Link>
                     )}

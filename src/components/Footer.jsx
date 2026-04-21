@@ -20,8 +20,8 @@ export default function Footer() {
                     <h3 className="font-semibold text-gray-800 mb-3">Quick Links</h3>
                     <ul className="space-y-2 text-sm text-muted">
                         <li><Link href="/" className="hover:text-primary transition">Home</Link></li>
-                        <li><Link href="/#services" className="hover:text-primary transition">Services</Link></li>
-                        <li><Link href="/#about" className="hover:text-primary transition">About Us</Link></li>
+                        <li><Link href="/services" className="hover:text-primary transition">Services</Link></li>
+                        <li><Link href="/about" className="hover:text-primary transition">About Us</Link></li>
                         <li><Link href="/my-bookings" className="hover:text-primary transition">My Bookings</Link></li>
                     </ul>
                 </div>

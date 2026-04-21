@@ -18,32 +18,7 @@ function useInView(threshold = 0.15) {
     return [ref, inView];
 }
 
-const services = [
-    {
-        id: "baby-care",
-        title: "Baby Care",
-        description: "Professional, loving babysitters for your little ones. Safe, fun, and trusted by hundreds of families.",
-        icon: "👶",
-        image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?w=600&q=80",
-        charge: 500,
-    },
-    {
-        id: "elderly-care",
-        title: "Elderly Care",
-        description: "Compassionate caregivers for your elderly loved ones — at home, on their terms.",
-        icon: "🧓",
-        image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=600&q=80",
-        charge: 600,
-    },
-    {
-        id: "sick-care",
-        title: "Sick People Care",
-        description: "Trained attendants to care for sick family members with patience and expertise.",
-        icon: "🏥",
-        image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80",
-        charge: 700,
-    },
-];
+
 
 const stats = [
     { value: "1,200+", label: "Families Served" },
@@ -68,6 +43,14 @@ export default function HomePage() {
     const [stepsRef, stepsIn] = useInView();
     const [reviewsRef, reviewsIn] = useInView();
     const [ctaRef, ctaIn] = useInView();
+    const [services, setServices] = useState([]);
+
+    useEffect(() => {
+        fetch("/api/services")
+            .then(res => res.json())
+            .then(data => setServices(data))
+            .catch(err => console.error("Failed to fetch services:", err));
+    }, []);
 
     useEffect(() => {
         fetch("/api/reviews")
@@ -81,8 +64,8 @@ export default function HomePage() {
 
             {/* ── HERO ── */}
             <section className="relative min-h-[92vh] flex items-center bg-background overflow-hidden">
-                <div className="absolute top-[-80px] right-[-80px] w-[420px] h-[420px] rounded-full bg-primary opacity-10 blur-3xl" />
-                <div className="absolute bottom-[-60px] left-[-60px] w-[320px] h-[320px] rounded-full bg-accent opacity-20 blur-3xl" />
+                <div className="absolute -top-20 -right-20 w-105 h-105 rounded-full bg-primary opacity-10 blur-3xl" />
+                <div className="absolute -bottom-15 -left-15 w-[320px] h-80 rounded-full bg-accent opacity-20 blur-3xl" />
 
                 <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center py-20">
                     <div
@@ -202,41 +185,64 @@ export default function HomePage() {
                     </div>
 
                     <div ref={servicesRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {services.map((s, i) => (
-                            <div
-                                key={s.id}
-                                style={{
-                                    opacity: servicesIn ? 1 : 0,
-                                    transform: servicesIn ? "translateY(0)" : "translateY(40px)",
-                                    transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
-                                }}
-                                className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group"
-                            >
-                                <div className="relative h-48 overflow-hidden">
-                                    <Image
-                                        src={s.image}
-                                        alt={s.title}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                                    <span className="absolute top-4 left-4 text-3xl">{s.icon}</span>
-                                </div>
-                                <div className="p-6">
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2">{s.title}</h3>
-                                    <p className="text-muted text-sm leading-relaxed mb-4">{s.description}</p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-primary font-bold">৳{s.charge}/hr</span>
-                                        <Link
-                                            href={`/service/${s.id}`}
-                                            className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-green-700 transition"
-                                        >
-                                            View Details →
-                                        </Link>
+                        {services.length === 0 ? (
+                            [1, 2, 3].map(i => (
+                                <div key={i} className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md animate-pulse">
+                                    <div className="h-48 bg-gray-200 dark:bg-gray-700" />
+                                    <div className="p-6 space-y-3">
+                                        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
+                                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            services.slice(0, 3).map((s, i) => (
+                                <div
+                                    key={s.id}
+                                    style={{
+                                        opacity: servicesIn ? 1 : 0,
+                                        transform: servicesIn ? "translateY(0)" : "translateY(40px)",
+                                        transition: `opacity 0.7s ease ${i * 0.1}s, transform 0.7s ease ${i * 0.1}s`,
+                                    }}
+                                    className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow group"
+                                >
+                                    <div className="relative h-48 overflow-hidden">
+                                        <Image
+                                            src={s.image}
+                                            alt={s.title}
+                                            fill
+                                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                                        <span className="absolute top-4 left-4 text-3xl">{s.icon}</span>
+                                    </div>
+                                    <div className="p-6">
+                                        <h3 className="text-xl font-bold text-gray-900 mb-2">{s.title}</h3>
+                                        <p className="text-muted text-sm leading-relaxed mb-4 line-clamp-2">{s.description}</p>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-primary font-bold">৳{s.charge}/hr</span>
+                                            <Link
+                                                href={`/service/${s.id}`}
+                                                className="px-4 py-2 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-green-700 transition"
+                                            >
+                                                View Details →
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                    {/* See All Button */}
+                    <div className="text-center mt-12">
+                        <Link
+                            href="/services"
+                            className="inline-flex items-center gap-2 px-8 py-4 border-2 border-primary text-primary font-bold rounded-2xl hover:bg-primary hover:text-white transition text-lg"
+                        >
+                            See All Services →
+                        </Link>
                     </div>
                 </div>
             </section>
