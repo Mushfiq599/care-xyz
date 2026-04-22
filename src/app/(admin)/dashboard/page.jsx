@@ -22,7 +22,7 @@ export default function DashboardPage() {
             try {
                 const [statsRes, bookingsRes] = await Promise.all([
                     fetch("/api/admin/stats"),
-                    fetch("/api/admin/bookings"),
+                    fetch("/api/admin/bookings"),  // ← was /api/bookings
                 ]);
                 const statsData = await statsRes.json();
                 const bookingsData = await bookingsRes.json();
