@@ -25,17 +25,14 @@ export async function POST(req) {
             location: body.location,
             totalCost: body.totalCost,
             status: "pending",
+            paymentIntentId: body.paymentIntentId || null,
+            paymentStatus: "paid",
         });
 
-        // Send invoice email
         try {
-            await sendInvoiceEmail({
-                to: session.user.email,
-                booking,
-            });
+            await sendInvoiceEmail({ to: session.user.email, booking });
         } catch (emailErr) {
             console.error("Email failed:", emailErr.message);
-            // Don't fail the booking if email fails
         }
 
         return NextResponse.json(
@@ -58,6 +55,7 @@ export async function GET() {
         }
 
         await dbConnect();
+        // Only current user's bookings
         const bookings = await Booking.find({
             userEmail: session.user.email,
         }).sort({ createdAt: -1 });

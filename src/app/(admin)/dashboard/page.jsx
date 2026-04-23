@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
     FiUsers, FiCalendar, FiDollarSign,
     FiClock, FiCheckCircle, FiXCircle, FiLoader
@@ -22,11 +23,12 @@ export default function DashboardPage() {
             try {
                 const [statsRes, bookingsRes] = await Promise.all([
                     fetch("/api/admin/stats"),
-                    fetch("/api/admin/bookings"),  // ← was /api/bookings
+                    fetch("/api/admin/bookings"),
                 ]);
                 const statsData = await statsRes.json();
                 const bookingsData = await bookingsRes.json();
                 setStats(statsData);
+                // Show 5 most recent from ALL users
                 setRecentBookings(bookingsData.bookings?.slice(0, 5) || []);
             } catch (err) {
                 console.error(err);
@@ -78,10 +80,15 @@ export default function DashboardPage() {
             {/* Recent Bookings */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
-                    <h2 className="font-bold text-white">Recent Bookings</h2>
-                    <a href="/dashboard/bookings" className="text-primary text-sm hover:underline">
+                    <h2 className="font-bold text-white">
+                        Recent Bookings
+                        <span className="ml-2 text-xs text-gray-400 font-normal">
+                            (all users)
+                        </span>
+                    </h2>
+                    <Link href="/dashboard/bookings" className="text-primary text-sm hover:underline">
                         View All →
-                    </a>
+                    </Link>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -91,6 +98,7 @@ export default function DashboardPage() {
                                 <th className="px-6 py-3 font-medium">Service</th>
                                 <th className="px-6 py-3 font-medium">Location</th>
                                 <th className="px-6 py-3 font-medium">Cost</th>
+                                <th className="px-6 py-3 font-medium">Payment</th>
                                 <th className="px-6 py-3 font-medium">Status</th>
                             </tr>
                         </thead>
@@ -99,10 +107,20 @@ export default function DashboardPage() {
                                 const config = statusConfig[b.status] || statusConfig.pending;
                                 return (
                                     <tr key={b._id} className="border-b border-gray-800/50 hover:bg-gray-800/50 transition">
-                                        <td className="px-6 py-4 text-gray-300">{b.userEmail}</td>
+                                        <td className="px-6 py-4 text-gray-300 text-xs max-w-[150px] truncate">
+                                            {b.userEmail}
+                                        </td>
                                         <td className="px-6 py-4 text-white font-medium">{b.serviceName}</td>
                                         <td className="px-6 py-4 text-gray-400">{b.location?.district}</td>
                                         <td className="px-6 py-4 text-primary font-bold">৳{b.totalCost}</td>
+                                        <td className="px-6 py-4">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
+                                                    ? "bg-green-900/30 text-green-400"
+                                                    : "bg-gray-800 text-gray-400"
+                                                }`}>
+                                                {b.paymentStatus === "paid" ? "💳 Paid" : "⏳ Unpaid"}
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color}`}>
                                                 {config.icon} {b.status}
@@ -113,7 +131,7 @@ export default function DashboardPage() {
                             })}
                             {recentBookings.length === 0 && (
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
                                         No bookings yet
                                     </td>
                                 </tr>
