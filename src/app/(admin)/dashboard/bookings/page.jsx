@@ -56,7 +56,7 @@ export default function AdminBookingsPage() {
         : bookings.filter(b => b.status === filter);
 
     const formatDate = (d) => new Date(d).toLocaleDateString("en-BD", {
-        day: "numeric", month: "short", year: "numeric"
+        day: "numeric", month: "numeric", year: "numeric"
     });
 
     if (loading) {
@@ -129,14 +129,14 @@ export default function AdminBookingsPage() {
                                         <td className="px-6 py-4 text-gray-400">{b.location?.district}, {b.location?.division}</td>
                                         <td className="px-6 py-4 text-primary font-bold">৳{b.totalCost}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
+                                            <span className={`px-1 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
                                                     ? "bg-green-900/30 text-green-400"
                                                     : "bg-gray-800 text-gray-400"
                                                 }`}>
                                                 {b.paymentStatus === "paid" ? "💳 Paid" : "⏳ Unpaid"}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-400">{formatDate(b.createdAt)}</td>
+                                        <td className="px-2 py-4 text-gray-400">{formatDate(b.createdAt)}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color}`}>
                                                 {b.status}

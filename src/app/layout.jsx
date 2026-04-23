@@ -9,6 +9,12 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Care.xyz - Trusted Care Services",
   description: "Find trusted babysitting, elderly care, and home care services.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-256.png", sizes: "256x256", type: "image/png" },
+    ]
+  },
 };
 
 export default function RootLayout({ children }) {
