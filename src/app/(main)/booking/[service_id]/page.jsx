@@ -30,7 +30,6 @@ export default function BookingPage() {
 
     const [step, setStep] = useState(0);
     const [success, setSuccess] = useState(false);
-    const [paymentIntentId, setPaymentIntentId] = useState("");
     const [error, setError] = useState("");
 
     // Form state
@@ -39,6 +38,7 @@ export default function BookingPage() {
     const [division, setDivision] = useState("");
     const [district, setDistrict] = useState("");
     const [city, setCity] = useState("");
+    const [area, setArea] = useState("");
     const [address, setAddress] = useState("");
 
     // Derived location options
@@ -49,17 +49,17 @@ export default function BookingPage() {
         ? (locationData[division] || []).find(d => d.district === district)?.cities || []
         : [];
 
-    // Total cost
+    // Total cost (1 day = 8 hours)
     const multiplier = durationType === "days" ? 8 : 1;
     const totalCost = service ? duration * service.charge * multiplier : 0;
 
-    // Booking data to pass to payment form
+    // Booking data
     const bookingData = {
         serviceId,
         serviceName: service?.title,
         duration,
         durationType,
-        location: { division, district, city, address },
+        location: { division, district, city, area, address },
         totalCost,
     };
 
@@ -104,10 +104,14 @@ export default function BookingPage() {
     }, [serviceId]);
 
     const handleNext = () => {
-        if (step === 0 && (!duration || duration < 1))
-            return setError("Please enter a valid duration.");
-        if (step === 1 && (!division || !district || !city || !address.trim()))
-            return setError("Please fill in all location fields.");
+        if (step === 0) {
+            if (!duration || duration < 1)
+                return setError("Please enter a valid duration.");
+        }
+        if (step === 1) {
+            if (!division || !district || !city || !area.trim() || !address.trim())
+                return setError("Please fill in all location fields including area.");
+        }
         setError("");
         setStep(s => s + 1);
     };
@@ -136,8 +140,7 @@ export default function BookingPage() {
         }
     }, [step, service]);
 
-    const handlePaymentSuccess = (intentId) => {
-        setPaymentIntentId(intentId);
+    const handlePaymentSuccess = () => {
         setSuccess(true);
     };
 
@@ -148,7 +151,10 @@ export default function BookingPage() {
     if (status === "loading" || pageLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
-                <FiLoader className="animate-spin text-primary text-4xl" />
+                <div className="text-center">
+                    <FiLoader className="animate-spin text-primary text-4xl mx-auto mb-4" />
+                    <p className="text-muted">Loading booking details...</p>
+                </div>
             </div>
         );
     }
@@ -171,7 +177,8 @@ export default function BookingPage() {
                         {[
                             { label: "Service", value: `${service.icon} ${service.title}` },
                             { label: "Duration", value: `${duration} ${durationType}` },
-                            { label: "Location", value: `${city}, ${district}` },
+                            { label: "Area", value: area },
+                            { label: "Location", value: `${city}, ${district}, ${division}` },
                             { label: "Total Paid", value: `৳${totalCost}` },
                             { label: "Payment", value: "✅ Paid via Stripe" },
                             { label: "Status", value: "⏳ Pending" },
@@ -238,14 +245,16 @@ export default function BookingPage() {
                         </div>
                     )}
 
-                    {/* Step 0 — Duration */}
+                    {/* ── STEP 0: Duration ── */}
                     {step === 0 && (
                         <div className="space-y-6">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                                 <FiClock className="text-primary" /> Select Duration
                             </h2>
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Duration Type</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                                    Duration Type
+                                </label>
                                 <div className="grid grid-cols-2 gap-4">
                                     {["hours", "days"].map(type => (
                                         <button
@@ -253,7 +262,7 @@ export default function BookingPage() {
                                             onClick={() => { setDurationType(type); setDuration(1); }}
                                             className={`py-4 rounded-2xl font-semibold border-2 transition capitalize text-sm ${durationType === type
                                                     ? "border-primary bg-primary/10 text-primary"
-                                                    : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600"
+                                                    : "border-cborder text-gray-500 hover:border-primary dark:border-gray-600 dark:text-gray-400"
                                                 }`}
                                         >
                                             {type === "hours" ? "⏰ Hours" : "📅 Days"}
@@ -273,6 +282,9 @@ export default function BookingPage() {
                                     onChange={e => setDuration(Math.max(1, Number(e.target.value)))}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 text-xl font-bold focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white text-center"
                                 />
+                                <p className="text-xs text-muted mt-1 text-center">
+                                    Max: {durationType === "hours" ? "24 hours" : "30 days"}
+                                </p>
                             </div>
                             <div className="bg-background dark:bg-[#0F1A12] rounded-2xl p-5 flex items-center justify-between border border-cborder dark:border-gray-700">
                                 <div>
@@ -288,18 +300,24 @@ export default function BookingPage() {
                         </div>
                     )}
 
-                    {/* Step 1 — Location */}
+                    {/* ── STEP 1: Location ── */}
                     {step === 1 && (
                         <div className="space-y-5">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                                 <FiMapPin className="text-primary" /> Select Location
                             </h2>
 
+                            {/* Division */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Division</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Division
+                                </label>
                                 <select
                                     value={division}
-                                    onChange={e => { setDivision(e.target.value); setDistrict(""); setCity(""); }}
+                                    onChange={e => {
+                                        setDivision(e.target.value);
+                                        setDistrict(""); setCity(""); setArea("");
+                                    }}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white"
                                 >
                                     <option value="">Select Division</option>
@@ -309,11 +327,17 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
+                            {/* District */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">District</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    District
+                                </label>
                                 <select
                                     value={district}
-                                    onChange={e => { setDistrict(e.target.value); setCity(""); }}
+                                    onChange={e => {
+                                        setDistrict(e.target.value);
+                                        setCity(""); setArea("");
+                                    }}
                                     disabled={!division}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
                                 >
@@ -324,11 +348,14 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
+                            {/* City */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City / Upazila</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    City / Upazila
+                                </label>
                                 <select
                                     value={city}
-                                    onChange={e => setCity(e.target.value)}
+                                    onChange={e => { setCity(e.target.value); setArea(""); }}
                                     disabled={!district}
                                     className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
                                 >
@@ -339,8 +366,26 @@ export default function BookingPage() {
                                 </select>
                             </div>
 
+                            {/* Area */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Address</label>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Area
+                                </label>
+                                <input
+                                    type="text"
+                                    value={area}
+                                    onChange={e => setArea(e.target.value)}
+                                    placeholder="e.g. Gulshan-1, Dhanmondi-15, Agrabad"
+                                    disabled={!city}
+                                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
+                                />
+                            </div>
+
+                            {/* Full Address */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Full Address
+                                </label>
                                 <textarea
                                     value={address}
                                     onChange={e => setAddress(e.target.value)}
@@ -352,14 +397,13 @@ export default function BookingPage() {
                         </div>
                     )}
 
-                    {/* Step 2 — Review & Pay */}
+                    {/* ── STEP 2: Review & Pay ── */}
                     {step === 2 && (
                         <div className="space-y-6">
                             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                                 <FiDollarSign className="text-primary" /> Review & Pay
                             </h2>
 
-                            {/* Summary */}
                             <div className="divide-y divide-cborder dark:divide-gray-700">
                                 {[
                                     { label: "Service", value: `${service.icon} ${service.title}` },
@@ -367,11 +411,14 @@ export default function BookingPage() {
                                     { label: "Division", value: division },
                                     { label: "District", value: district },
                                     { label: "City", value: city },
+                                    { label: "Area", value: area },
                                     { label: "Address", value: address },
                                 ].map((item, i) => (
                                     <div key={i} className="flex justify-between items-start py-3">
                                         <span className="text-sm text-muted">{item.label}</span>
-                                        <span className="text-sm font-semibold text-gray-900 text-right max-w-[60%]">{item.value}</span>
+                                        <span className="text-sm font-semibold text-gray-900 text-right max-w-[60%]">
+                                            {item.value}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -385,7 +432,7 @@ export default function BookingPage() {
                                 <FiLock className="text-primary text-3xl opacity-50" />
                             </div>
 
-                            {/* Stripe Payment Form */}
+                            {/* Stripe Payment */}
                             {creatingIntent ? (
                                 <div className="flex items-center justify-center py-8 gap-3 text-muted">
                                     <FiLoader className="animate-spin text-primary text-2xl" />
@@ -416,7 +463,7 @@ export default function BookingPage() {
                         </div>
                     )}
 
-                    {/* Navigation buttons — only show for steps 0 and 1 */}
+                    {/* Navigation — steps 0 and 1 only */}
                     {step < 2 && (
                         <div className="flex gap-4 mt-8">
                             {step > 0 && (

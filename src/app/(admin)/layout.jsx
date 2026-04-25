@@ -4,9 +4,10 @@ import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+
 import {
     FiGrid, FiUsers, FiCalendar,
-    FiLogOut, FiMenu, FiX
+    FiCreditCard, FiLogOut, FiMenu, FiX
 } from "react-icons/fi";
 
 export default function AdminLayout({ children }) {
@@ -37,6 +38,7 @@ export default function AdminLayout({ children }) {
     const navLinks = [
         { href: "/dashboard", label: "Overview", icon: <FiGrid /> },
         { href: "/dashboard/bookings", label: "Bookings", icon: <FiCalendar /> },
+        { href: "/dashboard/payments", label: "Payments", icon: <FiCreditCard /> },
         { href: "/dashboard/users", label: "Users", icon: <FiUsers /> },
     ];
 
@@ -69,8 +71,8 @@ export default function AdminLayout({ children }) {
                             key={link.href}
                             href={link.href}
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${pathname === link.href
-                                    ? "bg-primary/20 text-primary"
-                                    : "text-gray-400 hover:text-white hover:bg-gray-800"
+                                ? "bg-primary/20 text-primary"
+                                : "text-gray-400 hover:text-white hover:bg-gray-800"
                                 }`}
                         >
                             {link.icon}
@@ -124,8 +126,8 @@ export default function AdminLayout({ children }) {
                                     href={link.href}
                                     onClick={() => setSidebarOpen(false)}
                                     className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${pathname === link.href
-                                            ? "bg-primary/20 text-primary"
-                                            : "text-gray-400 hover:text-white hover:bg-gray-800"
+                                        ? "bg-primary/20 text-primary"
+                                        : "text-gray-400 hover:text-white hover:bg-gray-800"
                                         }`}
                                 >
                                     {link.icon}

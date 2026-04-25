@@ -1,10 +1,13 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function RegisterPage() {
+function RegisterPageInner() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get("callbackUrl") || "/";
+
     const [formData, setFormData] = useState({
         nid: "",
         name: "",
@@ -49,7 +52,8 @@ export default function RegisterPage() {
             const data = await res.json();
             if (!res.ok) return setError(data.message || "Registration failed.");
 
-            router.push("/login?registered=true");
+            // Redirect to login with callbackUrl preserved
+            router.push(`/login?registered=true&callbackUrl=${encodeURIComponent(callbackUrl)}`);
         } catch (err) {
             setError("Something went wrong. Please try again.");
         } finally {
@@ -59,10 +63,13 @@ export default function RegisterPage() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-background px-4">
-            <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-                <h2 className="text-2xl font-bold text-center text-primary mb-6">
+            <div className="bg-white dark:bg-[#1A2E1E] p-8 rounded-2xl shadow-md w-full max-w-md">
+                <h2 className="text-2xl font-bold text-center text-primary mb-2">
                     Create an Account
                 </h2>
+                <p className="text-center text-muted text-sm mb-6">
+                    Join Care.xyz and book trusted care services
+                </p>
 
                 {error && (
                     <p className="bg-red-100 text-red-600 text-sm p-3 rounded-lg mb-4">
@@ -78,7 +85,7 @@ export default function RegisterPage() {
                         value={formData.nid}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
                     <input
                         type="text"
@@ -87,7 +94,7 @@ export default function RegisterPage() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
                     <input
                         type="email"
@@ -96,7 +103,7 @@ export default function RegisterPage() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
                     <input
                         type="text"
@@ -105,7 +112,7 @@ export default function RegisterPage() {
                         value={formData.contact}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
                     <input
                         type="password"
@@ -114,8 +121,11 @@ export default function RegisterPage() {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
+                    <p className="text-xs text-muted -mt-2">
+                        Min 6 chars, 1 uppercase, 1 lowercase
+                    </p>
                     <input
                         type="password"
                         name="confirmPassword"
@@ -123,7 +133,7 @@ export default function RegisterPage() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required
-                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
                     />
 
                     <button
@@ -135,13 +145,21 @@ export default function RegisterPage() {
                     </button>
                 </form>
 
-                <p className="text-center text-sm text-gray-500 mt-4">
+                <p className="text-center text-sm text-muted mt-4">
                     Already have an account?{" "}
-                    <Link href="/login" className="text-primary hover:underline">
+                    <Link href="/login" className="text-primary hover:underline font-medium">
                         Login
                     </Link>
                 </p>
             </div>
         </div>
+    );
+}
+
+export default function RegisterPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
+            <RegisterPageInner />
+        </Suspense>
     );
 }
