@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
+import HeroSliders from "@/components/HeroSliders";
 
 // Animation hook
 function useInView(threshold = 0.15) {
@@ -65,96 +66,8 @@ export default function HomePage() {
         <div className="overflow-x-hidden">
 
             {/* ── HERO ── */}
-            <section className="relative min-h-[92vh] flex items-center bg-background overflow-hidden">
-                <div className="absolute -top-20 -right-20 w-105 h-105 rounded-full bg-primary opacity-10 blur-3xl" />
-                <div className="absolute -bottom-15 -left-15 w-[320px] h-80 rounded-full bg-accent opacity-20 blur-3xl" />
-
-                <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-12 items-center py-20">
-                    <div
-                        ref={heroRef}
-                        style={{
-                            opacity: heroIn ? 1 : 0,
-                            transform: heroIn ? "translateY(0)" : "translateY(40px)",
-                            transition: "opacity 0.8s ease, transform 0.8s ease",
-                        }}
-                    >
-                        <span className="inline-block bg-accent/20 text-yellow-700 text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-widest">
-                            Trusted Care Platform
-                        </span>
-                        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                            Care for Every <br />
-                            <span className="text-primary">Family Member</span> 💚
-                        </h1>
-                        <p className="text-lg text-muted leading-relaxed mb-8 max-w-lg">
-                            Book verified caretakers for your children, elderly parents, or sick family members — easily, safely, and affordably across Bangladesh.
-                        </p>
-                        <div className="flex gap-4 flex-wrap">
-                            <Link
-                                href="/#services"
-                                className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-green-700 transition shadow-lg shadow-green-200"
-                            >
-                                Explore Services
-                            </Link>
-                            {!session && (
-                                <Link
-                                    href="/register"
-                                    className="px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition"
-                                >
-                                    Get Started Free
-                                </Link>
-                            )}
-                        </div>
-
-                        <div className="flex items-center gap-4 mt-8">
-                            <div className="flex -space-x-2">
-                                {["women/44", "men/32", "women/68", "men/12"].map((p, i) => (
-                                    <Image
-                                        key={i}
-                                        src={`https://randomuser.me/api/portraits/${p}.jpg`}
-                                        alt="user"
-                                        width={36}
-                                        height={36}
-                                        className="rounded-full border-2 border-white"
-                                    />
-                                ))}
-                            </div>
-                            <p className="text-sm text-muted">
-                                <span className="font-bold text-gray-800">1,200+</span> families trust us
-                            </p>
-                        </div>
-                    </div>
-
-                    <div
-                        style={{
-                            opacity: heroIn ? 1 : 0,
-                            transform: heroIn ? "translateX(0)" : "translateX(60px)",
-                            transition: "opacity 1s ease 0.3s, transform 1s ease 0.3s",
-                        }}
-                        className="relative"
-                    >
-                        <div className="relative w-full h-[420px] rounded-3xl overflow-hidden shadow-2xl">
-                            <Image
-                                src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=800&q=80"
-                                alt="Caring for family"
-                                fill
-                                className="object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                        </div>
-                        <div className="absolute -bottom-5 -left-5 bg-white dark:bg-[#1A2E1E] rounded-2xl shadow-xl px-4 py-3 flex items-center gap-3">
-                            <span className="text-3xl">⭐</span>
-                            <div>
-                                <p className="font-bold text-gray-800 text-sm">4.9 / 5 Rating</p>
-                                <p className="text-xs text-muted">From 800+ reviews</p>
-                            </div>
-                        </div>
-                        <div className="absolute -top-5 -right-5 bg-primary text-white rounded-2xl shadow-xl px-4 py-3">
-                            <p className="font-bold text-sm">300+ Caretakers</p>
-                            <p className="text-xs opacity-80">Ready to help</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            
+            <HeroSliders></HeroSliders>
 
             {/* ── STATS ── */}
             <section className="bg-primary py-12">
