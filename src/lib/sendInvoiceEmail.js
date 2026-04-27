@@ -134,7 +134,7 @@ export async function sendInvoiceEmail({ to, booking }) {
     await transporter.sendMail({
         from: `"Care.xyz" <${process.env.EMAIL_USER}>`,
         to,
-        subject: `✅ Booking Confirmed — ${serviceName} | Care.xyz`,
+        subject: ` Booking Confirmed — ${serviceName} | Care.xyz`,
         html,
     });
 }

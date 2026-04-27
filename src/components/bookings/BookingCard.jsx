@@ -15,6 +15,19 @@ import { GiPartyPopper } from "react-icons/gi";
 import { FaBaby } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
 import { FaHospital } from "react-icons/fa";
+import { getServiceIcon } from "@/lib/serviceIcons";
+import { GiBabyBottle, GiBrain, GiMother } from "react-icons/gi";
+
+const serviceIdToIcon = {
+    "newborn-care": "babyBottle",
+    "special-needs-child-care": "puzzle",
+    "home-nursing": "syringe",
+    "physiotherapy-care": "leg",
+    "dementia-care": "brain",
+    "postnatal-care": "mother",
+    "palliative-care": "heart",
+};
+
 
 const statusConfig = {
     pending: {
@@ -43,16 +56,12 @@ const statusConfig = {
     },
 };
 
-const serviceIcons = {
-    "baby-care": <FaBaby />,
-    "elderly-care": <FaUserAlt />,
-    "sick-care": <FaHospital />,
-};
+
 
 export default function BookingCard({ booking, onCancel, cancellingId }) {
     const router = useRouter();
     const config = statusConfig[booking.status] || statusConfig.pending;
-    const icon = serviceIcons[booking.serviceId] || <FaHome />;
+    const iconName = serviceIdToIcon[booking.serviceId] || "heart";
 
     const formatDate = (dateStr) =>
         new Date(dateStr).toLocaleDateString("en-BD", {
@@ -66,8 +75,8 @@ export default function BookingCard({ booking, onCancel, cancellingId }) {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
                 <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-                        {icon}
+                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary flex-shrink-0">
+                        {getServiceIcon(iconName, "text-2xl")}
                     </div>
 
                     <div>

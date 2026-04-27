@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { FiCheckCircle, FiClock } from "react-icons/fi";
 import { TbCurrencyTaka } from "react-icons/tb";
 import { FaStripe, FaArrowRight } from "react-icons/fa";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 export default function BookingSuccess({
     service,
@@ -33,7 +34,6 @@ export default function BookingSuccess({
                     {[
                         {label: "Service", value: (
                                 <span className="flex items-center gap-2 justify-end">
-                                    {service.icon}
                                     {service.title}
                                 </span>
                             ),

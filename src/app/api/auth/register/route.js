@@ -7,7 +7,6 @@ export async function POST(req) {
     try {
         await dbConnect();
         const { nid, name, email, contact, password } = await req.json();
-
         const existing = await User.findOne({ email });
         if (existing) {
             return NextResponse.json(
@@ -15,10 +14,8 @@ export async function POST(req) {
                 { status: 400 }
             );
         }
-
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.create({ nid, name, email, contact, password: hashedPassword });
-
         return NextResponse.json(
             { message: "User registered successfully." },
             { status: 201 }

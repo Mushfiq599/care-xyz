@@ -5,7 +5,7 @@
         "tagline": "Specialized care for your newborn’s early days",
         "description": "Our newborn care specialists provide expert support for infants during their most delicate stage. From feeding to sleep routines, we ensure your baby gets the best start in life.",
         "image": "https://images.unsplash.com/photo-1544126592-807ade215a0b?w=1200&q=80",
-        "icon": "🍼",
+        "icon": "babyBottle",
         "charge": 650,
         "features": [
             "Newborn handling experts",
@@ -32,7 +32,7 @@
         "tagline": "Dedicated care for children with special needs",
         "description": "We provide compassionate and trained caregivers for children with special needs, ensuring safety, learning, and emotional support.",
         "image": "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&q=80",
-        "icon": "🧩",
+        "icon": "puzzle",
         "charge": 800,
         "features": [
             "Trained special needs caregivers",
@@ -59,7 +59,7 @@
         "tagline": "Professional nursing care at your doorstep",
         "description": "Certified nurses provide clinical care at home including injections, wound care, and monitoring health conditions.",
         "image": "https://images.unsplash.com/photo-1584515933487-779824d29309?w=1200&q=80",
-        "icon": "💉",
+        "icon": "syringe",
         "charge": 1200,
         "features": [
             "Certified nurses",
@@ -86,7 +86,7 @@
         "tagline": "Restore mobility and strength at home",
         "description": "Professional physiotherapists help patients recover from injuries, surgeries, and mobility issues with personalized therapy sessions.",
         "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80",
-        "icon": "🦵",
+        "icon": "leg",
         "charge": 1000,
         "features": [
             "Certified physiotherapists",
@@ -113,7 +113,7 @@
         "tagline": "Specialized memory care for elderly patients",
         "description": "We offer trained caregivers for dementia and Alzheimer’s patients focusing on safety, memory support, and emotional care.",
         "image": "https://images.unsplash.com/photo-1584515933487-779824d29309?w=1200&q=80",
-        "icon": "🧠",
+        "icon": "brain",
         "charge": 900,
         "features": [
             "Memory care specialists",
@@ -140,7 +140,7 @@
         "tagline": "Care and recovery support for new mothers",
         "description": "Our caregivers assist mothers after childbirth with recovery, baby care, and emotional support.",
         "image": "https://images.unsplash.com/photo-1519689680058-324335c77eba?w=1200&q=80",
-        "icon": "🤱",
+        "icon": "mother",
         "charge": 750,
         "features": [
             "Mother recovery support",
@@ -167,7 +167,7 @@
         "tagline": "Comfort-focused care for serious illness",
         "description": "We provide compassionate palliative care focusing on comfort, dignity, and quality of life for patients with serious illnesses.",
         "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=1200&q=80",
-        "icon": "❤️",
+        "icon": "heart",
         "charge": 1300,
         "features": [
             "Pain management",

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FiClock, FiMapPin, FiShield, FiStar, FiCheckCircle, FiArrowLeft } from "react-icons/fi";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 async function getService(id) {
     const res = await fetch(
@@ -53,7 +54,9 @@ export default async function ServiceDetailPage({ params }) {
                     >
                         <FiArrowLeft /> Back to Home
                     </Link>
-                    <span className="text-4xl mb-2">{service.icon}</span>
+                    <span className="text-white mb-2">
+                        {getServiceIcon(service.icon, "text-4xl")}
+                    </span>
                     <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-2">
                         {service.title}
                     </h1>
@@ -99,7 +102,9 @@ export default async function ServiceDetailPage({ params }) {
                 <div className="lg:col-span-1">
                     <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-lg p-8 sticky top-24">
                         <div className="text-center mb-6">
-                            <span className="text-5xl">{service.icon}</span>
+                            <span className="text-primary">
+                                {getServiceIcon(service.icon, "text-5xl")}
+                            </span>
                             <h3 className="text-xl font-bold text-gray-900 mt-3">{service.title}</h3>
                             <div className="flex items-center justify-center gap-1 mt-1">
                                 {[1, 2, 3, 4, 5].map(s => (

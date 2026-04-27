@@ -14,7 +14,6 @@ export async function PATCH(req, { params }) {
         await dbConnect();
         const { id } = await params;
         const { status } = await req.json();
-
         const booking = await Booking.findOneAndUpdate(
             { _id: id, userEmail: session.user.email },
             { status },

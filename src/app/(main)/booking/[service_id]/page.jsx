@@ -7,6 +7,7 @@ import DurationStep from "@/components/booking/DurationStep";
 import LocationStep from "@/components/booking/LocationStep";
 import ReviewStep from "@/components/booking/ReviewStep";
 import BookingSuccess from "@/components/booking/BookingSuccess";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 const STEPS = ["Duration", "Location", "Review & Pay"];
 
@@ -128,7 +129,9 @@ export default function BookingPage() {
 
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <span className="text-5xl">{service?.icon}</span>
+                    <span className="text-primary text-5xl">
+                        {getServiceIcon(service?.icon, "text-5xl")}
+                    </span>
                     <h1 className="text-3xl font-extrabold text-gray-900 mt-3">
                         Book {service?.title}
                     </h1>
@@ -142,10 +145,10 @@ export default function BookingPage() {
                     {STEPS.map((s, i) => (
                         <div key={i} className="flex items-center">
                             <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all ${i === step
-                                    ? "bg-primary text-white shadow-lg"
-                                    : i < step
-                                        ? "bg-green-100 text-primary dark:bg-green-900"
-                                        : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
+                                ? "bg-primary text-white shadow-lg"
+                                : i < step
+                                    ? "bg-green-100 text-primary dark:bg-green-900"
+                                    : "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500"
                                 }`}>
                                 <span>{i < step ? "✓" : i + 1}</span>
                                 <span className="hidden sm:inline">{s}</span>

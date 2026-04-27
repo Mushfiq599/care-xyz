@@ -13,9 +13,6 @@ export async function POST(req) {
         }
 
         const { totalCost, serviceName } = await req.json();
-
-        // Stripe requires amount in smallest currency unit
-        // Converting BDT to cents (1 BDT = 100 paisa)
         const paymentIntent = await stripe.paymentIntents.create({
             amount: totalCost * 100,
             currency: "bdt",

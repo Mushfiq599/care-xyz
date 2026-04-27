@@ -20,12 +20,10 @@ export async function GET() {
         const confirmedBookings = await Booking.countDocuments({ status: "confirmed" });
         const completedBookings = await Booking.countDocuments({ status: "completed" });
         const cancelledBookings = await Booking.countDocuments({ status: "cancelled" });
-
         const revenueData = await Booking.aggregate([
             { $match: { status: { $in: ["confirmed", "completed"] } } },
             { $group: { _id: null, total: { $sum: "$totalCost" } } },
         ]);
-
         const totalRevenue = revenueData[0]?.total || 0;
 
         return NextResponse.json({

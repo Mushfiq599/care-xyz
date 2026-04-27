@@ -6,6 +6,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import PaymentForm from "@/components/PaymentForm";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -55,7 +56,7 @@ export default function ReviewStep({
 
             <div className="divide-y divide-gray-200 dark:divide-gray-700">
                 {[
-                    { label: "Service", value: `${service.icon} ${service.title}` },
+                    { label: "Service", value: service.title },
                     { label: "Duration", value: `${duration} ${durationType}` },
                     { label: "Division", value: division },
                     { label: "District", value: district },

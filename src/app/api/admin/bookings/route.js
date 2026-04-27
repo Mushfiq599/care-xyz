@@ -12,9 +12,7 @@ export async function GET() {
         }
 
         await dbConnect();
-        // Fetch ALL bookings from ALL users — no email filter!
         const bookings = await Booking.find().sort({ createdAt: -1 });
-
         return NextResponse.json({ bookings });
     } catch (err) {
         return NextResponse.json({ message: err.message }, { status: 500 });

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiLoader } from "react-icons/fi";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 export default function ServicesPage() {
     const [services, setServices] = useState([]);
@@ -61,7 +62,9 @@ export default function ServicesPage() {
                                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
-                                <span className="absolute top-4 left-4 text-3xl">{s.icon}</span>
+                                <span className="absolute top-4 left-4 text-white">
+                                    {getServiceIcon(s.icon, "text-3xl")}
+                                </span>
                                 <div className="absolute bottom-4 left-4">
                                     <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
                                         ৳{s.charge}/hr

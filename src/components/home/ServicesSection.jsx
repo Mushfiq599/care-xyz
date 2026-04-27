@@ -5,6 +5,7 @@ import Link from "next/link";
 import useInView from "@/hooks/useInView";
 import { FaArrowRight } from "react-icons/fa";
 import { TbCurrencyTaka } from "react-icons/tb";
+import { getServiceIcon } from "@/lib/serviceIcons";
 
 export default function ServicesSection() {
     const [services, setServices] = useState([]);
@@ -34,15 +35,15 @@ export default function ServicesSection() {
 
                 <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {services.length === 0 ? ([1, 2, 3].map(i => (
-                            <div key={i} className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md animate-pulse">
-                                <div className="h-48 bg-gray-200 dark:bg-gray-700" />
-                                <div className="p-6 space-y-3">
-                                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
-                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
-                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
-                                </div>
+                        <div key={i} className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md animate-pulse">
+                            <div className="h-48 bg-gray-200 dark:bg-gray-700" />
+                            <div className="p-6 space-y-3">
+                                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
+                                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
+                                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
                             </div>
-                        ))
+                        </div>
+                    ))
                     ) : (
                         services.slice(0, 3).map((s, i) => (
                             <div
@@ -58,9 +59,11 @@ export default function ServicesSection() {
                                         src={s.image}
                                         alt={s.title}
                                         fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-500"/>
+                                        className="object-cover group-hover:scale-105 transition-transform duration-500" />
                                     <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent" />
-                                    <span className="absolute top-4 left-4 text-3xl">{s.icon}</span>
+                                    <span className="absolute top-4 left-4 text-white">
+                                        {getServiceIcon(s.icon, "text-3xl")}
+                                    </span>
                                 </div>
                                 <div className="p-6">
                                     <h3 className="text-xl font-bold text-gray-900 mb-2">{s.title}</h3>
@@ -68,11 +71,11 @@ export default function ServicesSection() {
                                         {s.description}
                                     </p>
                                     <div className="flex items-center justify-between">
-                                        <span className="flex text-primary font-bold"><TbCurrencyTaka size={24}/>{s.charge}/hr</span>
+                                        <span className="flex text-primary font-bold"><TbCurrencyTaka size={24} />{s.charge}/hr</span>
                                         <Link
                                             href={`/service/${s.id}`}
                                             className="flex items-center px-4 py-2 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-green-700 transition">
-                                            View Details <FaArrowRight className="pl-1"/>
+                                            View Details <FaArrowRight className="pl-1" />
                                         </Link>
                                     </div>
                                 </div>

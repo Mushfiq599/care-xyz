@@ -53,9 +53,7 @@ export async function GET() {
         if (!session) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
-
         await dbConnect();
-        // Only current user's bookings
         const bookings = await Booking.find({
             userEmail: session.user.email,
         }).sort({ createdAt: -1 });
