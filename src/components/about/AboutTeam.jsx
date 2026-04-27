@@ -56,15 +56,13 @@ export default function AboutTeam() {
                                 transform: inView ? "translateY(0)" : "translateY(40px)",
                                 transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
                             }}
-                            className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 text-center hover:shadow-lg transition group"
-                        >
+                            className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 text-center hover:shadow-lg transition group">
                             <div className="relative w-24 h-24 mx-auto mb-4">
                                 <Image
                                     src={member.image}
                                     alt={member.name}
                                     fill
-                                    className="rounded-full object-cover border-4 border-primary/20 group-hover:border-primary transition-all"
-                                />
+                                    className="rounded-full object-cover border-4 border-primary/20 group-hover:border-primary transition-all"/>
                             </div>
                             <h3 className="font-bold text-gray-900 text-lg">{member.name}</h3>
                             <p className="text-primary text-sm font-semibold mb-2">{member.role}</p>

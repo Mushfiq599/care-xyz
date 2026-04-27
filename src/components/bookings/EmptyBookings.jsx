@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { FaArrowRightLong } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 
 export default function EmptyBookings() {
@@ -14,9 +15,8 @@ export default function EmptyBookings() {
             </p>
             <button
                 onClick={() => router.push("/services")}
-                className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition"
-            >
-                Explore Services →
+                className="flex items-center gap-1 px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition">
+                Explore Services <FaArrowRightLong />
             </button>
         </div>
     );

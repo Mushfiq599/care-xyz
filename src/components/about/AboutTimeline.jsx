@@ -26,7 +26,6 @@ export default function AboutTimeline() {
                 </div>
 
                 <div ref={ref} className="relative">
-                    {/* Vertical line */}
                     <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-0.5 bg-primary/20 dark:bg-primary/30 -translate-x-1/2" />
 
                     {milestones.map((m, i) => (
@@ -38,12 +37,8 @@ export default function AboutTimeline() {
                                 transition: `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`,
                             }}
                             className={`relative flex items-start gap-6 mb-10 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                                }`}
-                        >
-                            {/* Dot */}
+                                }`}>
                             <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-background shadow-lg z-10" />
-
-                            {/* Card */}
                             <div className={`ml-14 md:ml-0 md:w-[45%] bg-white dark:bg-[#1A2E1E] rounded-2xl p-5 shadow-sm hover:shadow-md transition ${i % 2 === 0 ? "md:mr-auto" : "md:ml-auto"
                                 }`}>
                                 <span className="inline-block bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full mb-2">

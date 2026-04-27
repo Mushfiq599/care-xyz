@@ -52,8 +52,7 @@ export default function AboutValues() {
                                 transform: inView ? "translateY(0)" : "translateY(40px)",
                                 transition: `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`,
                             }}
-                            className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 hover:shadow-lg transition group"
-                        >
+                            className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 hover:shadow-lg transition group">
                             <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 ${v.color} group-hover:scale-110 transition-transform`}>
                                 {v.icon}
                             </div>

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import useInView from "@/hooks/useInView";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function AboutHero() {
     const [ref, inView] = useInView(0.1);
@@ -14,9 +15,8 @@ export default function AboutHero() {
                     alt="About Care.xyz"
                     fill
                     className="object-cover"
-                    priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
+                    priority/>
+                <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/60 to-transparent" />
             </div>
 
             <div
@@ -26,8 +26,7 @@ export default function AboutHero() {
                     transform: inView ? "translateY(0)" : "translateY(40px)",
                     transition: "opacity 0.9s ease, transform 0.9s ease",
                 }}
-                className="relative max-w-7xl mx-auto px-4"
-            >
+                className="relative max-w-7xl mx-auto px-4">
                 <span className="inline-block bg-primary/20 text-green-300 text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-widest border border-green-500/30">
                     Our Story
                 </span>
@@ -42,14 +41,12 @@ export default function AboutHero() {
                 <div className="flex gap-4 flex-wrap">
                     <Link
                         href="/services"
-                        className="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-green-700 transition shadow-lg"
-                    >
-                        Our Services →
+                        className="flex items-center gap-1 px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-green-700 transition shadow-lg">
+                        Our Services <FaArrowRightLong />
                     </Link>
                     <Link
                         href="/register"
-                        className="px-6 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-gray-900 transition"
-                    >
+                        className="px-6 py-3 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-gray-900 transition">
                         Join Us Today
                     </Link>
                 </div>

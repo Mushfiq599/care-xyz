@@ -10,24 +10,20 @@ export default function AboutMission() {
         <section className="py-20">
             <div
                 ref={ref}
-                className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16 items-center"
-            >
-                {/* Image */}
+                className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                 <div
                     style={{
                         opacity: inView ? 1 : 0,
                         transform: inView ? "translateX(0)" : "translateX(-50px)",
                         transition: "opacity 0.8s ease, transform 0.8s ease",
                     }}
-                    className="relative"
-                >
-                    <div className="relative w-full h-[420px] rounded-3xl overflow-hidden shadow-2xl">
+                    className="relative">
+                    <div className="relative w-full h-105 rounded-3xl overflow-hidden shadow-2xl">
                         <Image
                             src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80"
                             alt="Our Mission"
                             fill
-                            className="object-cover"
-                        />
+                            className="object-cover"/>
                     </div>
                     <div className="absolute -bottom-6 -right-6 bg-accent rounded-2xl px-6 py-4 shadow-xl">
                         <p className="font-extrabold text-2xl text-gray-900">5+ Years</p>
@@ -39,14 +35,12 @@ export default function AboutMission() {
                     </div>
                 </div>
 
-                {/* Text */}
                 <div
                     style={{
                         opacity: inView ? 1 : 0,
                         transform: inView ? "translateX(0)" : "translateX(50px)",
                         transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
-                    }}
-                >
+                    }}>
                     <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                         Our Mission
                     </span>
@@ -71,7 +65,7 @@ export default function AboutMission() {
                             "Transparent pricing, no hidden fees",
                         ].map((item, i) => (
                             <div key={i} className="flex items-center gap-3">
-                                <FiCheckCircle className="text-primary flex-shrink-0 text-lg" />
+                                <FiCheckCircle className="text-primary shrink-0 text-lg" />
                                 <span className="text-gray-700 dark:text-gray-300 text-sm">{item}</span>
                             </div>
                         ))}

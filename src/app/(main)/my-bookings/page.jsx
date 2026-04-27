@@ -10,21 +10,18 @@ import EmptyBookings from "@/components/bookings/EmptyBookings";
 export default function MyBookingsPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
-
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [cancellingId, setCancellingId] = useState(null);
     const [error, setError] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
 
-    // Auth guard
     useEffect(() => {
         if (status === "unauthenticated") {
             router.push("/login?callbackUrl=/my-bookings");
         }
     }, [status]);
 
-    // Fetch bookings
     const fetchBookings = async () => {
         try {
             setLoading(true);
@@ -43,7 +40,6 @@ export default function MyBookingsPage() {
         if (status === "authenticated") fetchBookings();
     }, [status]);
 
-    // Cancel booking
     const handleCancel = async (id) => {
         if (!confirm("Are you sure you want to cancel this booking?")) return;
         setCancellingId(id);
@@ -81,7 +77,6 @@ export default function MyBookingsPage() {
         <div className="min-h-screen bg-background py-12 px-4">
             <div className="max-w-4xl mx-auto">
 
-                {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-extrabold text-gray-900">My Bookings</h1>
                     <p className="text-muted mt-1">
@@ -89,14 +84,12 @@ export default function MyBookingsPage() {
                     </p>
                 </div>
 
-                {/* Success message */}
                 {successMsg && (
                     <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-xl p-4 mb-6 text-sm">
                         <FiCheckCircle /> {successMsg}
                     </div>
                 )}
 
-                {/* Error message */}
                 {error && (
                     <div className="flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-xl p-4 mb-6 text-sm">
                         <FiAlertCircle /> {error}
@@ -115,16 +108,14 @@ export default function MyBookingsPage() {
                                     key={booking._id}
                                     booking={booking}
                                     onCancel={handleCancel}
-                                    cancellingId={cancellingId}
-                                />
+                                    cancellingId={cancellingId}/>
                             ))}
                         </div>
 
                         <div className="text-center mt-8">
                             <button
                                 onClick={() => router.push("/services")}
-                                className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200"
-                            >
+                                className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200">
                                 + Book Another Service
                             </button>
                         </div>

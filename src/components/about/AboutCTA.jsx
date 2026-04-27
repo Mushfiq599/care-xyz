@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import useInView from "@/hooks/useInView";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export default function AboutCTA() {
     const [ref, inView] = useInView();
@@ -27,14 +28,12 @@ export default function AboutCTA() {
                 <div className="flex gap-4 justify-center flex-wrap">
                     <Link
                         href="/register"
-                        className="px-8 py-4 bg-accent text-gray-900 font-bold rounded-2xl hover:bg-yellow-400 transition shadow-xl text-lg"
-                    >
-                        Get Started Free →
+                        className="flex items-center gap-1 px-8 py-4 bg-accent text-gray-900 font-bold rounded-2xl hover:bg-yellow-400 transition shadow-xl text-lg">
+                        Get Started Free <FaArrowRightLong />
                     </Link>
                     <Link
                         href="/services"
-                        className="px-8 py-4 border-2 border-white text-white font-bold rounded-2xl hover:bg-white hover:text-gray-900 transition text-lg"
-                    >
+                        className="px-8 py-4 border-2 border-white text-white font-bold rounded-2xl hover:bg-white hover:text-gray-900 transition text-lg">
                         View Services
                     </Link>
                 </div>

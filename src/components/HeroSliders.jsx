@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const slides = [
   {
@@ -74,30 +76,23 @@ export default function HeroSliders() {
 
   return (
     <section className="relative w-full h-[92vh] overflow-hidden">
-
-      {/* Background Images */}
       {slides.map((s, i) => (
         <div
           key={s.id}
           className="absolute inset-0 transition-opacity duration-700"
-          style={{ opacity: i === current ? 1 : 0 }}
-        >
+          style={{ opacity: i === current ? 1 : 0 }}>
           <Image
             src={s.image}
             alt={s.title}
             fill
             className="object-cover"
-            priority={i === 0}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent" />
+            priority={i === 0}/>
+          <div className="absolute inset-0 bg-linear-to-r from-black/75 via-black/50 to-transparent" />
         </div>
       ))}
 
-      {/* Decorative blobs */}
       <div className="absolute top-10 right-10 w-72 h-72 rounded-full bg-primary opacity-10 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-32 w-48 h-48 rounded-full bg-accent opacity-10 blur-3xl pointer-events-none" />
-
-      {/* Slide Content */}
       <div className="relative h-full max-w-7xl mx-auto px-4 flex items-center">
         <div
           style={{
@@ -105,41 +100,32 @@ export default function HeroSliders() {
             transform: animating ? "translateY(20px)" : "translateY(0)",
             transition: "opacity 0.4s ease, transform 0.4s ease",
           }}
-          className="max-w-2xl"
-        >
-          {/* Tag */}
+          className="max-w-2xl">
           <span className="inline-block bg-primary/30 border border-primary/50 text-green-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 uppercase tracking-widest">
             {slide.tag}
           </span>
 
-          {/* Title */}
           <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-3">
             {slide.title} <br />
             <span className="text-primary">{slide.highlight}</span>
           </h1>
 
-          {/* Description */}
           <p className="text-white/80 text-lg leading-relaxed mb-8 max-w-xl">
             {slide.description}
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex gap-4 flex-wrap">
             <Link
               href={slide.cta.href}
-              className="px-7 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-green-700 transition shadow-lg shadow-green-900/50 text-sm"
-            >
-              {slide.cta.label} →
+              className="flex items-center gap-1 px-7 py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-green-700 transition shadow-lg shadow-green-900/50 text-sm">
+              {slide.cta.label} <FaArrowRightLong />
             </Link>
             <Link
               href={slide.ctaSecondary.href}
-              className="px-7 py-3.5 border-2 border-white/60 text-white font-bold rounded-xl hover:bg-white/10 transition text-sm"
-            >
+              className="px-7 py-3.5 border-2 border-white/60 text-white font-bold rounded-xl hover:bg-white/10 transition text-sm">
               {slide.ctaSecondary.label}
             </Link>
           </div>
-
-          {/* Trust badges */}
           <div className="flex items-center gap-6 mt-10 flex-wrap">
             {[
               { value: "1,200+", label: "Families" },
@@ -154,22 +140,17 @@ export default function HeroSliders() {
           </div>
         </div>
       </div>
-
-      {/* Prev / Next Arrows */}
       <button
         onClick={goToPrev}
-        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-primary/80 border border-white/20 rounded-full flex items-center justify-center text-white transition backdrop-blur-sm z-10"
-      >
-        ‹
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-primary/80 border border-white/20 rounded-full flex items-center justify-center text-white transition backdrop-blur-sm z-10">
+        <IoIosArrowBack />
       </button>
       <button
         onClick={goToNext}
-        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-primary/80 border border-white/20 rounded-full flex items-center justify-center text-white transition backdrop-blur-sm z-10"
-      >
-        ›
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-primary/80 border border-white/20 rounded-full flex items-center justify-center text-white transition backdrop-blur-sm z-10">
+        <IoIosArrowForward />
       </button>
 
-      {/* Dots Navigation */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 z-10">
         {slides.map((_, i) => (
           <button
@@ -179,17 +160,10 @@ export default function HeroSliders() {
               i === current
                 ? "w-8 h-3 bg-primary"
                 : "w-3 h-3 bg-white/40 hover:bg-white/70"
-            }`}
-          />
+            }`}/>
         ))}
       </div>
 
-      {/* Slide counter */}
-      <div className="absolute bottom-8 right-6 text-white/50 text-sm font-medium z-10">
-        {String(current + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-      </div>
-
-      {/* Progress bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/10">
         <div
           className="h-full bg-primary transition-all duration-300"
