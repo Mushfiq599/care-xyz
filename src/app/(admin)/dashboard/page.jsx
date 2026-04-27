@@ -2,15 +2,41 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-    FiUsers, FiCalendar, FiDollarSign,
-    FiClock, FiCheckCircle, FiXCircle, FiLoader
+    FiUsers,
+    FiCalendar,
+    FiDollarSign,
+    FiClock,
+    FiCheckCircle,
+    FiXCircle,
+    FiLoader,
+    FiCreditCard,
 } from "react-icons/fi";
+import { MdOutlinePendingActions } from "react-icons/md";
+import { GiPartyPopper } from "react-icons/gi";
+import { TbCurrencyTaka } from "react-icons/tb";
+import { FaArrowRight } from "react-icons/fa";
 
 const statusConfig = {
-    pending: { color: "text-yellow-400", bg: "bg-yellow-900/30", icon: "⏳" },
-    confirmed: { color: "text-blue-400", bg: "bg-blue-900/30", icon: "✅" },
-    completed: { color: "text-green-400", bg: "bg-green-900/30", icon: "🎉" },
-    cancelled: { color: "text-red-400", bg: "bg-red-900/30", icon: "❌" },
+    pending: {
+        color: "text-yellow-400",
+        bg: "bg-yellow-900/30",
+        icon: <MdOutlinePendingActions />,
+    },
+    confirmed: {
+        color: "text-blue-400",
+        bg: "bg-blue-900/30",
+        icon: <FiCheckCircle />,
+    },
+    completed: {
+        color: "text-green-400",
+        bg: "bg-green-900/30",
+        icon: <GiPartyPopper />,
+    },
+    cancelled: {
+        color: "text-red-400",
+        bg: "bg-red-900/30",
+        icon: <FiXCircle />,
+    },
 };
 
 export default function DashboardPage() {
@@ -28,7 +54,6 @@ export default function DashboardPage() {
                 const statsData = await statsRes.json();
                 const bookingsData = await bookingsRes.json();
                 setStats(statsData);
-                // Show 5 most recent from ALL users
                 setRecentBookings(bookingsData.bookings?.slice(0, 5) || []);
             } catch (err) {
                 console.error(err);
@@ -48,36 +73,81 @@ export default function DashboardPage() {
     }
 
     const statCards = [
-        { label: "Total Bookings", value: stats?.totalBookings || 0, icon: <FiCalendar />, color: "bg-blue-900/30 text-blue-400" },
-        { label: "Total Users", value: stats?.totalUsers || 0, icon: <FiUsers />, color: "bg-purple-900/30 text-purple-400" },
-        { label: "Total Revenue", value: `৳${stats?.totalRevenue || 0}`, icon: <FiDollarSign />, color: "bg-green-900/30 text-green-400" },
-        { label: "Pending", value: stats?.pendingBookings || 0, icon: <FiClock />, color: "bg-yellow-900/30 text-yellow-400" },
-        { label: "Confirmed", value: stats?.confirmedBookings || 0, icon: <FiCheckCircle />, color: "bg-blue-900/30 text-blue-400" },
-        { label: "Completed", value: stats?.completedBookings || 0, icon: <FiCheckCircle />, color: "bg-green-900/30 text-green-400" },
-        { label: "Cancelled", value: stats?.cancelledBookings || 0, icon: <FiXCircle />, color: "bg-red-900/30 text-red-400" },
+        {
+            label: "Total Bookings",
+            value: stats?.totalBookings || 0,
+            icon: <FiCalendar />,
+            color: "bg-blue-900/30 text-blue-400",
+        },
+        {
+            label: "Total Users",
+            value: stats?.totalUsers || 0,
+            icon: <FiUsers />,
+            color: "bg-purple-900/30 text-purple-400",
+        },
+        {
+            label: "Total Revenue",
+            value: (
+                <span className="flex items-center gap-1">
+                    <TbCurrencyTaka />
+                    {stats?.totalRevenue || 0}
+                </span>
+            ),
+            icon: <FiDollarSign />,
+            color: "bg-green-900/30 text-green-400",
+        },
+        {
+            label: "Pending",
+            value: stats?.pendingBookings || 0,
+            icon: <FiClock />,
+            color: "bg-yellow-900/30 text-yellow-400",
+        },
+        {
+            label: "Confirmed",
+            value: stats?.confirmedBookings || 0,
+            icon: <FiCheckCircle />,
+            color: "bg-blue-900/30 text-blue-400",
+        },
+        {
+            label: "Completed",
+            value: stats?.completedBookings || 0,
+            icon: <FiCheckCircle />,
+            color: "bg-green-900/30 text-green-400",
+        },
+        {
+            label: "Cancelled",
+            value: stats?.cancelledBookings || 0,
+            icon: <FiXCircle />,
+            color: "bg-red-900/30 text-red-400",
+        },
     ];
 
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-2xl font-extrabold text-white">Dashboard Overview</h1>
-                <p className="text-gray-400 mt-1">Welcome back, Admin! Here's what's happening.</p>
+                <h1 className="text-2xl font-extrabold text-white">
+                    Dashboard Overview
+                </h1>
+                <p className="text-gray-400 mt-1">
+                    Welcome back, Admin! Here's what's happening.
+                </p>
             </div>
-
-            {/* Stats Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {statCards.map((card, i) => (
-                    <div key={i} className="bg-gray-900 rounded-2xl p-5 border border-gray-800">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${card.color}`}>
+                    <div
+                        key={i}
+                        className="bg-gray-900 rounded-2xl p-5 border border-gray-800">
+                        <div
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${card.color}`}>
                             {card.icon}
                         </div>
-                        <p className="text-2xl font-extrabold text-white">{card.value}</p>
+                        <p className="text-2xl font-extrabold text-white">
+                            {card.value}
+                        </p>
                         <p className="text-gray-400 text-sm mt-1">{card.label}</p>
                     </div>
                 ))}
             </div>
-
-            {/* Recent Bookings */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
                     <h2 className="font-bold text-white">
@@ -86,10 +156,13 @@ export default function DashboardPage() {
                             (all users)
                         </span>
                     </h2>
-                    <Link href="/dashboard/bookings" className="text-primary text-sm hover:underline">
-                        View All →
+                    <Link
+                        href="/dashboard/bookings"
+                        className="flex items-center justify-center gap-1 text-primary text-sm hover:underline">
+                        View All <FaArrowRight/>
                     </Link>
                 </div>
+
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
@@ -102,36 +175,62 @@ export default function DashboardPage() {
                                 <th className="px-6 py-3 font-medium">Status</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {recentBookings.map((b) => {
-                                const config = statusConfig[b.status] || statusConfig.pending;
+                                const config =
+                                    statusConfig[b.status] || statusConfig.pending;
+
                                 return (
-                                    <tr key={b._id} className="border-b border-gray-800/50 hover:bg-gray-800/50 transition">
+                                    <tr
+                                        key={b._id}
+                                        className="border-b border-gray-800/50 hover:bg-gray-800/50 transition">
                                         <td className="px-6 py-4 text-gray-300 text-xs max-w-[150px] truncate">
                                             {b.userEmail}
                                         </td>
-                                        <td className="px-6 py-4 text-white font-medium">{b.serviceName}</td>
-                                        <td className="px-6 py-4 text-gray-400">{b.location?.district}</td>
-                                        <td className="px-6 py-4 text-primary font-bold">৳{b.totalCost}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
-                                                    ? "bg-green-900/30 text-green-400"
-                                                    : "bg-gray-800 text-gray-400"
-                                                }`}>
-                                                {b.paymentStatus === "paid" ? "💳 Paid" : "⏳ Unpaid"}
+
+                                        <td className="px-6 py-4 text-white font-medium">
+                                            {b.serviceName}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-gray-400">
+                                            {b.location?.district}
+                                        </td>
+
+                                        <td className="px-6 py-4 text-primary font-bold">
+                                            <span className="flex items-center gap-1">
+                                                <TbCurrencyTaka />
+                                                {b.totalCost}
                                             </span>
                                         </td>
+
                                         <td className="px-6 py-4">
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color}`}>
-                                                {config.icon} {b.status}
+                                            <span
+                                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
+                                                        ? "bg-green-900/30 text-green-400"
+                                                        : "bg-gray-800 text-gray-400"
+                                                    }`}>
+                                                <FiCreditCard />
+                                                {b.paymentStatus === "paid" ? "Paid" : "Unpaid"}
+                                            </span>
+                                        </td>
+
+                                        <td className="px-6 py-4">
+                                            <span
+                                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${config.bg} ${config.color}`}>
+                                                {config.icon}
+                                                {b.status}
                                             </span>
                                         </td>
                                     </tr>
                                 );
                             })}
+
                             {recentBookings.length === 0 && (
                                 <tr>
-                                    <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                                    <td
+                                        colSpan={6}
+                                        className="px-6 py-8 text-center text-gray-500">
                                         No bookings yet
                                     </td>
                                 </tr>

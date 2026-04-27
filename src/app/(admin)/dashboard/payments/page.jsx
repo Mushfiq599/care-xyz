@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FiLoader, FiDollarSign, FiTrendingUp, FiCreditCard } from "react-icons/fi";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 export default function AdminPaymentsPage() {
     const [bookings, setBookings] = useState([]);
@@ -41,14 +42,10 @@ export default function AdminPaymentsPage() {
 
     return (
         <div className="space-y-6">
-
-            {/* Header */}
             <div>
                 <h1 className="text-2xl font-extrabold text-white">Payment History</h1>
                 <p className="text-gray-400 mt-1">All successful Stripe payments.</p>
             </div>
-
-            {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-gray-900 rounded-2xl p-5 border border-gray-800">
                     <div className="w-10 h-10 rounded-xl bg-green-900/30 text-green-400 flex items-center justify-center mb-3">
@@ -70,23 +67,19 @@ export default function AdminPaymentsPage() {
                     <div className="w-10 h-10 rounded-xl bg-yellow-900/30 text-yellow-400 flex items-center justify-center mb-3">
                         <FiTrendingUp />
                     </div>
-                    <p className="text-2xl font-extrabold text-white">
-                        ৳{bookings.length ? Math.round(totalRevenue / bookings.length) : 0}
+                    <p className="text-2xl flex items-center font-extrabold text-white">
+                        <TbCurrencyTaka />{bookings.length ? Math.round(totalRevenue / bookings.length) : 0}
                     </p>
                     <p className="text-gray-400 text-sm mt-1">Average per Booking</p>
                 </div>
             </div>
 
-            {/* Search */}
             <input
                 type="text"
                 placeholder="Search by email, service or payment ID..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-primary"
-            />
-
-            {/* Table */}
+                className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-primary"/>
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
                     <h2 className="font-bold text-white">
@@ -134,15 +127,15 @@ export default function AdminPaymentsPage() {
                                     <td className="px-6 py-4 text-gray-400">
                                         {b.duration} {b.durationType}
                                     </td>
-                                    <td className="px-6 py-4 text-primary font-bold">
-                                        ৳{b.totalCost}
+                                    <td className="flex items-center px-6 py-4 text-primary font-bold">
+                                        <TbCurrencyTaka size={18}/>{b.totalCost}
                                     </td>
                                     <td className="px-6 py-4 text-gray-400 text-xs">
                                         {formatDate(b.createdAt)}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="bg-green-900/30 text-green-400 px-3 py-1 rounded-full text-xs font-semibold">
-                                            💳 Paid
+                                        <span className="flex items-center gap-1 bg-green-900/30 text-green-400 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <FiCreditCard color="#FCD34D" /> Paid
                                         </span>
                                     </td>
                                 </tr>

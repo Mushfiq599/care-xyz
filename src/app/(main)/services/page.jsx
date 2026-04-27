@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiLoader } from "react-icons/fi";
 import { getServiceIcon } from "@/lib/serviceIcons";
+import { TbCurrencyTaka } from "react-icons/tb";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function ServicesPage() {
     const [services, setServices] = useState([]);
@@ -30,8 +32,6 @@ export default function ServicesPage() {
     return (
         <div className="min-h-screen bg-background py-16 px-4">
             <div className="max-w-7xl mx-auto">
-
-                {/* Header */}
                 <div className="text-center mb-12">
                     <span className="text-xs font-semibold uppercase tracking-widest text-primary">
                         What We Offer
@@ -43,8 +43,6 @@ export default function ServicesPage() {
                         Professional, verified, and compassionate care for every member of your family.
                     </p>
                 </div>
-
-                {/* Services Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((s, i) => (
                         <div
@@ -52,22 +50,20 @@ export default function ServicesPage() {
                             style={{
                                 animationDelay: `${i * 0.1}s`,
                             }}
-                            className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 group"
-                        >
+                            className="bg-white dark:bg-[#1A2E1E] rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all hover:-translate-y-1 group">
                             <div className="relative h-52 overflow-hidden">
                                 <Image
                                     src={s.image}
                                     alt={s.title}
                                     fill
-                                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                                />
+                                    className="object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent" />
                                 <span className="absolute top-4 left-4 text-white">
                                     {getServiceIcon(s.icon, "text-3xl")}
                                 </span>
                                 <div className="absolute bottom-4 left-4">
-                                    <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
-                                        ৳{s.charge}/hr
+                                    <span className="flex items-center bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                                        <TbCurrencyTaka size={18} />{s.charge}/hr
                                     </span>
                                 </div>
                             </div>
@@ -79,22 +75,20 @@ export default function ServicesPage() {
                                 </p>
                                 <Link
                                     href={`/service/${s.id}`}
-                                    className="block w-full text-center px-4 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition"
+                                    className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition"
                                 >
-                                    View Details →
+                                    View Details
+                                    <FaArrowRight />
                                 </Link>
                             </div>
                         </div>
                     ))}
                 </div>
-
-                {/* Back to home */}
                 <div className="text-center mt-12">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-primary hover:underline font-medium"
-                    >
-                        ← Back to Home
+                        className="inline-flex items-center gap-2 text-primary hover:underline font-medium">
+                        <FaArrowLeft/> Back to Home
                     </Link>
                 </div>
             </div>

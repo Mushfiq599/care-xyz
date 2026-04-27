@@ -8,6 +8,7 @@ import LocationStep from "@/components/booking/LocationStep";
 import ReviewStep from "@/components/booking/ReviewStep";
 import BookingSuccess from "@/components/booking/BookingSuccess";
 import { getServiceIcon } from "@/lib/serviceIcons";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 const STEPS = ["Duration", "Location", "Review & Pay"];
 
@@ -15,17 +16,13 @@ export default function BookingPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const params = useParams();
-
     const [serviceId, setServiceId] = useState(null);
     const [service, setService] = useState(null);
     const [locationData, setLocationData] = useState({});
     const [pageLoading, setPageLoading] = useState(true);
-
     const [step, setStep] = useState(0);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState("");
-
-    // Form state
     const [duration, setDuration] = useState(1);
     const [durationType, setDurationType] = useState("hours");
     const [division, setDivision] = useState("");
@@ -34,11 +31,9 @@ export default function BookingPage() {
     const [area, setArea] = useState("");
     const [address, setAddress] = useState("");
 
-    // Total cost
     const multiplier = durationType === "days" ? 8 : 1;
     const totalCost = service ? duration * service.charge * multiplier : 0;
 
-    // Booking data for payment
     const bookingData = {
         serviceId,
         serviceName: service?.title,
@@ -48,7 +43,6 @@ export default function BookingPage() {
         totalCost,
     };
 
-    // Resolve params
     useEffect(() => {
         const resolve = async () => {
             const resolved = await params;
@@ -57,14 +51,12 @@ export default function BookingPage() {
         resolve();
     }, [params]);
 
-    // Auth guard
     useEffect(() => {
         if (status === "unauthenticated" && serviceId) {
             router.push(`/login?callbackUrl=/booking/${serviceId}`);
         }
     }, [status, serviceId]);
 
-    // Fetch service + locations
     useEffect(() => {
         if (!serviceId) return;
         const fetchData = async () => {
@@ -126,10 +118,8 @@ export default function BookingPage() {
     return (
         <div className="min-h-screen bg-background py-12 px-4">
             <div className="max-w-2xl mx-auto">
-
-                {/* Header */}
                 <div className="text-center mb-10">
-                    <span className="text-primary text-5xl">
+                    <span className="flex items-center justify-center text-primary text-5xl">
                         {getServiceIcon(service?.icon, "text-5xl")}
                     </span>
                     <h1 className="text-3xl font-extrabold text-gray-900 mt-3">
@@ -139,8 +129,6 @@ export default function BookingPage() {
                         ৳{service?.charge}/hr • Complete the steps below
                     </p>
                 </div>
-
-                {/* Stepper */}
                 <div className="flex items-center justify-center mb-10">
                     {STEPS.map((s, i) => (
                         <div key={i} className="flex items-center">
@@ -160,13 +148,10 @@ export default function BookingPage() {
                         </div>
                     ))}
                 </div>
-
-                {/* Card */}
                 <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-lg p-8">
-
                     {error && (
                         <div className="flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 rounded-xl p-4 mb-6 text-sm">
-                            <FiAlertCircle className="flex-shrink-0" /> {error}
+                            <FiAlertCircle className="flex shrink-0" /> {error}
                         </div>
                     )}
 
@@ -206,26 +191,22 @@ export default function BookingPage() {
                             bookingData={bookingData}
                             onSuccess={() => setSuccess(true)}
                             onError={(msg) => setError(msg)}
-                            onBack={() => { setStep(1); setError(""); }}
-                        />
+                            onBack={() => { setStep(1); setError(""); }}/>
                     )}
 
-                    {/* Navigation — steps 0 and 1 only */}
                     {step < 2 && (
                         <div className="flex gap-4 mt-8">
                             {step > 0 && (
                                 <button
                                     onClick={() => { setStep(s => s - 1); setError(""); }}
-                                    className="flex-1 py-3 border-2 border-cborder dark:border-gray-600 rounded-2xl font-semibold text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition"
-                                >
-                                    ← Back
+                                    className="flex items-center justify-center gap-1 flex-1 py-3 border-2 border-cborder dark:border-gray-600 rounded-2xl font-semibold text-gray-700 dark:text-gray-300 hover:border-primary hover:text-primary transition">
+                                    <FaArrowLeft/> Back
                                 </button>
                             )}
                             <button
                                 onClick={handleNext}
-                                className="flex-1 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg"
-                            >
-                                Next →
+                                className="flex items-center justify-center gap-1 flex-1 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg">
+                                Next <FaArrowRight/>
                             </button>
                         </div>
                     )}

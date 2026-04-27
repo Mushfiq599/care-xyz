@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiClock, FiMapPin, FiShield, FiStar, FiCheckCircle, FiArrowLeft } from "react-icons/fi";
 import { getServiceIcon } from "@/lib/serviceIcons";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 async function getService(id) {
     const res = await fetch(
@@ -30,28 +32,25 @@ export default async function ServiceDetailPage({ params }) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center bg-background">
                 <p className="text-2xl font-bold text-gray-800">Service not found</p>
-                <Link href="/" className="mt-4 text-primary hover:underline">← Back to Home</Link>
+                <Link href="/" className="flex items-center mt-4 text-primary hover:underline"><FaArrowLeft/> Back to Home</Link>
             </div>
         );
     }
 
     return (
         <div className="bg-background min-h-screen">
-            {/* ── HERO ── */}
-            <div className="relative h-[400px] w-full overflow-hidden">
+            <div className="relative h-100 w-full overflow-hidden">
                 <Image
                     src={service.image}
                     alt={service.title}
                     fill
                     className="object-cover"
-                    priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    priority/>
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
                 <div className="absolute inset-0 flex flex-col justify-end max-w-7xl mx-auto px-4 pb-10">
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-white/80 hover:text-white text-sm mb-4 transition w-fit"
-                    >
+                        className="flex items-center gap-2 text-white/80 hover:text-white text-sm mb-4 transition w-fit">
                         <FiArrowLeft /> Back to Home
                     </Link>
                     <span className="text-white mb-2">
@@ -63,22 +62,18 @@ export default async function ServiceDetailPage({ params }) {
                     <p className="text-white/80 text-lg">{service.tagline}</p>
                 </div>
             </div>
-
-            {/* ── MAIN CONTENT ── */}
             <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
-                {/* Left */}
                 <div className="lg:col-span-2 space-y-10">
                     <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl p-8 shadow-sm">
                         <h2 className="text-2xl font-bold text-gray-900 mb-4">About This Service</h2>
                         <p className="text-muted leading-relaxed">{service.description}</p>
                     </div>
-
                     <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl p-8 shadow-sm">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6">What's Included</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {service.features.map((f, i) => (
                                 <div key={i} className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-primary mt-0.5 flex-shrink-0 text-lg" />
+                                    <FiCheckCircle className="flex text-primary mt-0.5 shrink-0 text-lg" />
                                     <span className="text-gray-700 text-sm">{f}</span>
                                 </div>
                             ))}
@@ -98,11 +93,10 @@ export default async function ServiceDetailPage({ params }) {
                     </div>
                 </div>
 
-                {/* Right — Booking Card */}
                 <div className="lg:col-span-1">
                     <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-lg p-8 sticky top-24">
                         <div className="text-center mb-6">
-                            <span className="text-primary">
+                            <span className="flex items-center justify-center text-primary">
                                 {getServiceIcon(service.icon, "text-5xl")}
                             </span>
                             <h3 className="text-xl font-bold text-gray-900 mt-3">{service.title}</h3>
@@ -119,7 +113,7 @@ export default async function ServiceDetailPage({ params }) {
                                 <div className="flex items-center gap-2 text-muted text-sm">
                                     <FiClock /> Service Charge
                                 </div>
-                                <span className="font-bold text-gray-900">৳{service.charge}/hr</span>
+                                <span className="flex items-center font-bold text-gray-900"><TbCurrencyTaka size={20}/>{service.charge}/hr</span>
                             </div>
                             <div className="flex items-center justify-between py-3 border-b border-cborder dark:border-gray-700">
                                 <div className="flex items-center gap-2 text-muted text-sm">
@@ -137,9 +131,8 @@ export default async function ServiceDetailPage({ params }) {
 
                         <Link
                             href={`/booking/${service.id}`}
-                            className="block w-full text-center bg-primary text-white font-bold py-4 rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200 text-lg"
-                        >
-                            Book This Service →
+                            className="flex items-center justify-center gap-1 w-full text-center bg-primary text-white font-bold py-4 rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200 text-lg">
+                            Book This Service <FaArrowRight/>
                         </Link>
                         <p className="text-center text-xs text-muted mt-3">
                             You'll be asked to login if not already signed in

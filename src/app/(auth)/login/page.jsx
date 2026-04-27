@@ -3,6 +3,7 @@ import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 function LoginPageInner() {
     const router = useRouter();
@@ -47,7 +48,7 @@ function LoginPageInner() {
         <div className="min-h-screen flex items-center justify-center bg-background px-4">
             <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
                 <h2 className="text-2xl font-bold text-center text-primary mb-2">
-                    Welcome Back 👋
+                    Welcome Back 
                 </h2>
                 <p className="text-center text-muted text-sm mb-6">
                     Login to manage your care bookings
@@ -73,8 +74,7 @@ function LoginPageInner() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
+                        className="w-full border border-cborder rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"/>
                     <input
                         type="password"
                         name="password"
@@ -82,14 +82,12 @@ function LoginPageInner() {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
+                        className="w-full border border-cborder rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"/>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50"
-                    >
+                        className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50">
                         {loading ? "Logging in..." : "Login"}
                     </button>
                 </form>
@@ -102,13 +100,12 @@ function LoginPageInner() {
 
                 <button
                     onClick={handleGoogle}
-                    className="w-full flex items-center justify-center gap-3 border border-cborder rounded-lg py-2 hover:bg-gray-50 transition font-medium"
-                >
-                    <img
+                    className="w-full flex items-center justify-center gap-3 border border-cborder rounded-lg py-2 hover:bg-gray-50 transition font-medium">
+                    <Image
                         src="https://www.svgrepo.com/show/475656/google-color.svg"
                         alt="Google"
-                        className="w-5 h-5"
-                    />
+                        width={20}
+                        height={20}/>
                     Continue with Google
                 </button>
 

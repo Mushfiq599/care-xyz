@@ -51,8 +51,6 @@ function RegisterPageInner() {
 
             const data = await res.json();
             if (!res.ok) return setError(data.message || "Registration failed.");
-
-            // Redirect to login with callbackUrl preserved
             router.push(`/login?registered=true&callbackUrl=${encodeURIComponent(callbackUrl)}`);
         } catch (err) {
             setError("Something went wrong. Please try again.");
@@ -85,8 +83,7 @@ function RegisterPageInner() {
                         value={formData.nid}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
                     <input
                         type="text"
                         name="name"
@@ -94,8 +91,7 @@ function RegisterPageInner() {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
                     <input
                         type="email"
                         name="email"
@@ -103,8 +99,7 @@ function RegisterPageInner() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
                     <input
                         type="text"
                         name="contact"
@@ -112,8 +107,7 @@ function RegisterPageInner() {
                         value={formData.contact}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
                     <input
                         type="password"
                         name="password"
@@ -121,8 +115,7 @@ function RegisterPageInner() {
                         value={formData.password}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
                     <p className="text-xs text-muted -mt-2">
                         Min 6 chars, 1 uppercase, 1 lowercase
                     </p>
@@ -133,14 +126,12 @@ function RegisterPageInner() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         required
-                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"
-                    />
+                        className="w-full border border-cborder dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary dark:bg-[#0F1A12] dark:text-white"/>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50"
-                    >
+                        className="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-green-700 transition disabled:opacity-50">
                         {loading ? "Registering..." : "Register"}
                     </button>
                 </form>

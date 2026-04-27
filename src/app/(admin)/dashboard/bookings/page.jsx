@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FiLoader, FiAlertCircle } from "react-icons/fi";
+import { IoMdCheckbox } from "react-icons/io";
+import { TbCurrencyTaka } from "react-icons/tb";
 
 const statusConfig = {
     pending: { color: "text-yellow-400", bg: "bg-yellow-900/30" },
@@ -75,8 +77,8 @@ export default function AdminBookingsPage() {
             </div>
 
             {success && (
-                <div className="bg-green-900/30 text-green-400 rounded-xl p-4 text-sm">
-                    ✅ {success}
+                <div className="flex items-center gap-2 bg-green-900/30 text-green-400 rounded-xl p-4 text-sm">
+                    <IoMdCheckbox />{success}
                 </div>
             )}
             {error && (
@@ -85,7 +87,6 @@ export default function AdminBookingsPage() {
                 </div>
             )}
 
-            {/* Filter tabs */}
             <div className="flex gap-2 flex-wrap">
                 {["all", "pending", "confirmed", "completed", "cancelled"].map(f => (
                     <button
@@ -94,14 +95,11 @@ export default function AdminBookingsPage() {
                         className={`px-4 py-2 rounded-xl text-sm font-semibold capitalize transition ${filter === f
                             ? "bg-primary text-white"
                             : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                            }`}
-                    >
+                            }`}>
                         {f} {f === "all" ? `(${bookings.length})` : `(${bookings.filter(b => b.status === f).length})`}
                     </button>
                 ))}
             </div>
-
-            {/* Table */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -127,13 +125,13 @@ export default function AdminBookingsPage() {
                                         <td className="px-6 py-4 text-white font-medium">{b.serviceName}</td>
                                         <td className="px-6 py-4 text-gray-400">{b.duration} {b.durationType}</td>
                                         <td className="px-6 py-4 text-gray-400">{b.location?.district}, {b.location?.division}</td>
-                                        <td className="px-6 py-4 text-primary font-bold">৳{b.totalCost}</td>
+                                        <td className="flex items-center justify-center px-6 py-4 text-primary font-bold"><TbCurrencyTaka/>{b.totalCost}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-1 py-1 rounded-full text-xs font-semibold ${b.paymentStatus === "paid"
                                                     ? "bg-green-900/30 text-green-400"
                                                     : "bg-gray-800 text-gray-400"
                                                 }`}>
-                                                {b.paymentStatus === "paid" ? "💳 Paid" : "⏳ Unpaid"}
+                                                {b.paymentStatus === "paid" ? " Paid" : " Unpaid"}
                                             </span>
                                         </td>
                                         <td className="px-2 py-4 text-gray-400">{formatDate(b.createdAt)}</td>
@@ -147,8 +145,7 @@ export default function AdminBookingsPage() {
                                                 value={b.status}
                                                 onChange={e => handleStatusChange(b._id, e.target.value)}
                                                 disabled={updating === b._id}
-                                                className="bg-gray-800 text-white text-xs rounded-lg px-3 py-2 border border-gray-700 focus:outline-none focus:border-primary disabled:opacity-50"
-                                            >
+                                                className="bg-gray-800 text-white text-xs rounded-lg px-3 py-2 border border-gray-700 focus:outline-none focus:border-primary disabled:opacity-50">
                                                 <option value="pending">Pending</option>
                                                 <option value="confirmed">Confirmed</option>
                                                 <option value="completed">Completed</option>

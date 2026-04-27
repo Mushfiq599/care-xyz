@@ -43,18 +43,8 @@ export default function AdminLayout({ children }) {
     ];
 
     return (
-        // This wrapper sits BELOW the main Navbar naturally
         <div className="flex bg-gray-950 min-h-screen">
-
-            {/* Sidebar — sticky but starts below navbar */}
-            <aside className={`
-        sticky top-[65px] h-[calc(100vh-65px)] self-start
-        w-64 bg-gray-900 border-r border-gray-800
-        flex-shrink-0 flex-col
-        hidden md:flex
-        z-10
-      `}>
-                {/* Logo */}
+            <aside className={`sticky top-[65px] h-[calc(100vh-65px)] self-start w-64 bg-gray-900 border-r border-gray-800 flex-shrink-0 flex-col hidden md:flex z-10`}>
                 <div className="px-6 py-5 border-b border-gray-800">
                     <Link href="/dashboard" className="text-xl font-extrabold text-white">
                         Care<span className="text-primary">.xyz</span>
@@ -64,7 +54,6 @@ export default function AdminLayout({ children }) {
                     </Link>
                 </div>
 
-                {/* Nav Links */}
                 <nav className="px-3 py-4 space-y-1 flex-1">
                     {navLinks.map(link => (
                         <Link
@@ -73,15 +62,12 @@ export default function AdminLayout({ children }) {
                             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${pathname === link.href
                                 ? "bg-primary/20 text-primary"
                                 : "text-gray-400 hover:text-white hover:bg-gray-800"
-                                }`}
-                        >
+                                }`}>
                             {link.icon}
                             {link.label}
                         </Link>
                     ))}
                 </nav>
-
-                {/* Bottom user info */}
                 <div className="p-4 border-t border-gray-800">
                     <div className="flex items-center gap-3 mb-3 px-2">
                         <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-sm">
@@ -89,7 +75,7 @@ export default function AdminLayout({ children }) {
                         </div>
                         <div>
                             <p className="text-xs font-semibold text-white">Admin</p>
-                            <p className="text-xs text-gray-500 truncate max-w-[140px]">
+                            <p className="text-xs text-gray-500 truncate max-w-35">
                                 {session?.user?.email}
                             </p>
                         </div>
@@ -102,8 +88,6 @@ export default function AdminLayout({ children }) {
                     </button>
                 </div>
             </aside>
-
-            {/* Mobile sidebar overlay */}
             {sidebarOpen && (
                 <>
                     <div
@@ -128,8 +112,7 @@ export default function AdminLayout({ children }) {
                                     className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${pathname === link.href
                                         ? "bg-primary/20 text-primary"
                                         : "text-gray-400 hover:text-white hover:bg-gray-800"
-                                        }`}
-                                >
+                                        }`}>
                                     {link.icon}
                                     {link.label}
                                 </Link>
@@ -147,19 +130,15 @@ export default function AdminLayout({ children }) {
                 </>
             )}
 
-            {/* Main content */}
             <div className="flex-1 min-w-0">
-                {/* Mobile top bar */}
                 <div className="md:hidden bg-gray-900 border-b border-gray-800 px-4 py-4 flex items-center gap-4">
                     <button
                         onClick={() => setSidebarOpen(true)}
-                        className="text-gray-400 hover:text-white"
-                    >
+                        className="text-gray-400 hover:text-white">
                         <FiMenu className="text-xl" />
                     </button>
                     <span className="font-bold text-white">Admin Dashboard</span>
                 </div>
-
                 <main className="p-6">
                     {children}
                 </main>

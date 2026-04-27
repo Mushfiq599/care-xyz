@@ -39,16 +39,13 @@ export default function AdminUsersPage() {
                 <p className="text-gray-400 mt-1">All registered users on Care.xyz</p>
             </div>
 
-            {/* Search */}
             <input
                 type="text"
                 placeholder="Search by name or email..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-primary"
-            />
+                className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-primary"/>
 
-            {/* Stats */}
             <div className="flex gap-4">
                 <div className="bg-gray-900 rounded-2xl px-6 py-4 border border-gray-800">
                     <p className="text-2xl font-extrabold text-white">{users.length}</p>
@@ -68,7 +65,6 @@ export default function AdminUsersPage() {
                 </div>
             </div>
 
-            {/* Table */}
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
@@ -93,8 +89,7 @@ export default function AdminUsersPage() {
                                                     alt={user.name}
                                                     width={32}
                                                     height={32}
-                                                    className="rounded-full"
-                                                />
+                                                    className="rounded-full"/>
                                             ) : (
                                                 <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center text-primary">
                                                     <FiUser className="text-xs" />
