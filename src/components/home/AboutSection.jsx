@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
+import { FaCheckCircle } from "react-icons/fa";
 
 export default function AboutSection() {
     return (
         <section id="about" className="py-20 bg-background">
             <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                 <div className="relative">
-                    <div className="relative w-full h-[400px] rounded-3xl overflow-hidden shadow-xl">
+                    <div className="relative w-full h-100 rounded-3xl overflow-hidden shadow-xl">
                         <Image
                             src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
                             alt="About Care.xyz"
@@ -37,8 +38,12 @@ export default function AboutSection() {
                         families. We operate across all 8 divisions of Bangladesh.
                     </p>
                     <div className="flex gap-4 flex-wrap">
-                        {["Background Checked ✅", "Trained & Certified ✅", "24/7 Support ✅"].map((badge, i) => (
-                            <span key={i} className="bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full">
+                        {["Background Checked", "Trained & Certified", "24/7 Support"].map((badge, i) => (
+                            <span
+                                key={i}
+                                className="flex items-center gap-2 bg-primary/10 text-primary text-sm font-medium px-4 py-2 rounded-full"
+                            >
+                                <FaCheckCircle className="text-primary" />
                                 {badge}
                             </span>
                         ))}

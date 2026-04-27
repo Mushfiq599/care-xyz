@@ -23,7 +23,6 @@ export default function LocationStep({
                 <FiMapPin className="text-primary" /> Select Location
             </h2>
 
-            {/* Division */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Division
@@ -34,8 +33,7 @@ export default function LocationStep({
                         setDivision(e.target.value);
                         setDistrict(""); setCity(""); setArea("");
                     }}
-                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white"
-                >
+                    className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary dark:bg-[#0F1A12] dark:text-white">
                     <option value="">Select Division</option>
                     {Object.keys(locationData).map(d => (
                         <option key={d} value={d}>{d}</option>
@@ -43,7 +41,6 @@ export default function LocationStep({
                 </select>
             </div>
 
-            {/* District */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     District
@@ -55,8 +52,7 @@ export default function LocationStep({
                         setCity(""); setArea("");
                     }}
                     disabled={!division}
-                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
-                >
+                    className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white">
                     <option value="">Select District</option>
                     {districts.map(d => (
                         <option key={d} value={d}>{d}</option>
@@ -64,7 +60,6 @@ export default function LocationStep({
                 </select>
             </div>
 
-            {/* City */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     City / Upazila
@@ -73,8 +68,7 @@ export default function LocationStep({
                     value={city}
                     onChange={e => { setCity(e.target.value); setArea(""); }}
                     disabled={!district}
-                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
-                >
+                    className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white">
                     <option value="">Select City</option>
                     {cities.map(c => (
                         <option key={c} value={c}>{c}</option>
@@ -82,7 +76,6 @@ export default function LocationStep({
                 </select>
             </div>
 
-            {/* Area */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Area
@@ -93,11 +86,9 @@ export default function LocationStep({
                     onChange={e => setArea(e.target.value)}
                     placeholder="e.g. Gulshan-1, Dhanmondi-15, Agrabad"
                     disabled={!city}
-                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"
-                />
+                    className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary disabled:opacity-50 dark:bg-[#0F1A12] dark:text-white"/>
             </div>
 
-            {/* Full Address */}
             <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Full Address
@@ -107,8 +98,7 @@ export default function LocationStep({
                     onChange={e => setAddress(e.target.value)}
                     placeholder="House no, road, landmark..."
                     rows={3}
-                    className="w-full border-2 border-cborder dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary resize-none dark:bg-[#0F1A12] dark:text-white"
-                />
+                    className="w-full border-2 border-gray-200 dark:border-gray-600 rounded-2xl px-4 py-3 focus:outline-none focus:border-primary resize-none dark:bg-[#0F1A12] dark:text-white"/>
             </div>
         </div>
     );

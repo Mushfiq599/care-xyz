@@ -2,40 +2,10 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-    FiClock, FiMapPin, FiDollarSign,
-    FiLoader, FiAlertCircle, FiCalendar,
-    FiXCircle, FiCheckCircle, FiPackage
-} from "react-icons/fi";
-
-const statusConfig = {
-    pending: {
-        label: "Pending",
-        color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-400",
-        icon: "⏳",
-    },
-    confirmed: {
-        label: "Confirmed",
-        color: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-400",
-        icon: "✅",
-    },
-    completed: {
-        label: "Completed",
-        color: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400",
-        icon: "🎉",
-    },
-    cancelled: {
-        label: "Cancelled",
-        color: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400",
-        icon: "❌",
-    },
-};
-
-const serviceIcons = {
-    "baby-care": "👶",
-    "elderly-care": "🧓",
-    "sick-care": "🏥",
-};
+import { FiLoader, FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import BookingCard from "@/components/bookings/BookingCard";
+import BookingStats from "@/components/bookings/BookingStats";
+import EmptyBookings from "@/components/bookings/EmptyBookings";
 
 export default function MyBookingsPage() {
     const { data: session, status } = useSession();
@@ -89,17 +59,11 @@ export default function MyBookingsPage() {
             setSuccessMsg("Booking cancelled successfully.");
             setTimeout(() => setSuccessMsg(""), 3000);
             fetchBookings();
-        } catch (err) {
+        } catch {
             setError("Failed to cancel booking. Please try again.");
         } finally {
             setCancellingId(null);
         }
-    };
-
-    const formatDate = (dateStr) => {
-        return new Date(dateStr).toLocaleDateString("en-BD", {
-            day: "numeric", month: "short", year: "numeric",
-        });
     };
 
     if (status === "loading" || loading) {
@@ -139,138 +103,32 @@ export default function MyBookingsPage() {
                     </div>
                 )}
 
-                {/* Stats row */}
-                {bookings.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                        {["pending", "confirmed", "completed", "cancelled"].map(s => {
-                            const count = bookings.filter(b => b.status === s).length;
-                            const config = statusConfig[s];
-                            return (
-                                <div
-                                    key={s}
-                                    className="bg-white dark:bg-[#1A2E1E] rounded-2xl p-4 shadow-sm text-center"
-                                >
-                                    <p className="text-2xl font-extrabold text-gray-900">{count}</p>
-                                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${config.color}`}>
-                                        {config.icon} {config.label}
-                                    </span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
-
-                {/* Empty state */}
                 {bookings.length === 0 ? (
-                    <div className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-sm p-16 text-center">
-                        <FiPackage className="text-6xl text-gray-300 mx-auto mb-4" />
-                        <h2 className="text-xl font-bold text-gray-900 mb-2">No bookings yet</h2>
-                        <p className="text-muted mb-6">
-                            You haven't made any bookings yet. Start by exploring our services.
-                        </p>
-                        <button
-                            onClick={() => router.push("/#services")}
-                            className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition"
-                        >
-                            Explore Services →
-                        </button>
-                    </div>
+                    <EmptyBookings />
                 ) : (
-                    <div className="space-y-4">
-                        {bookings.map((booking) => {
-                            const config = statusConfig[booking.status] || statusConfig.pending;
-                            const icon = serviceIcons[booking.serviceId] || "🏠";
-                            return (
-                                <div
+                    <>
+                        <BookingStats bookings={bookings} />
+
+                        <div className="space-y-4">
+                            {bookings.map(booking => (
+                                <BookingCard
                                     key={booking._id}
-                                    className="bg-white dark:bg-[#1A2E1E] rounded-3xl shadow-sm hover:shadow-md transition p-6"
-                                >
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    booking={booking}
+                                    onCancel={handleCancel}
+                                    cancellingId={cancellingId}
+                                />
+                            ))}
+                        </div>
 
-                                        {/* Left — Service info */}
-                                        <div className="flex items-start gap-4">
-                                            <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0">
-                                                {icon}
-                                            </div>
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <h3 className="font-bold text-gray-900 text-lg">
-                                                        {booking.serviceName}
-                                                    </h3>
-                                                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${config.color}`}>
-                                                        {config.icon} {config.label}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-wrap gap-4 text-sm text-muted">
-                                                    <span className="flex items-center gap-1">
-                                                        <FiClock className="text-primary" />
-                                                        {booking.duration} {booking.durationType}
-                                                    </span>
-                                                    <span className="flex items-center gap-1">
-                                                        <FiMapPin className="text-primary" />
-                                                        {booking.location?.area}, {booking.location?.district}
-                                                    </span>
-                                                    <span className="flex items-center gap-1">
-                                                        <FiCalendar className="text-primary" />
-                                                        {formatDate(booking.createdAt)}
-                                                    </span>
-                                                    <span className="flex items-center gap-1 font-bold text-primary">
-                                                        <FiDollarSign />
-                                                        ৳{booking.totalCost}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Right — Actions */}
-                                        <div className="flex items-center gap-3 flex-shrink-0">
-                                            {booking.status === "pending" && (
-                                                <button
-                                                    onClick={() => handleCancel(booking._id)}
-                                                    disabled={cancellingId === booking._id}
-                                                    className="flex items-center gap-2 px-4 py-2 border-2 border-red-300 text-red-500 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition text-sm font-semibold disabled:opacity-50"
-                                                >
-                                                    {cancellingId === booking._id ? (
-                                                        <FiLoader className="animate-spin" />
-                                                    ) : (
-                                                        <FiXCircle />
-                                                    )}
-                                                    Cancel
-                                                </button>
-                                            )}
-                                            <button
-                                                onClick={() => router.push(`/service/${booking.serviceId}`)}
-                                                className="px-4 py-2 bg-primary/10 text-primary rounded-xl hover:bg-primary hover:text-white transition text-sm font-semibold"
-                                            >
-                                                View Service
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Address */}
-                                    <div className="mt-4 pt-4 border-t border-cborder dark:border-gray-700">
-                                        <p className="text-xs text-muted">
-                                            📍 {booking.location?.address}, {booking.location?.area},
-                                            {booking.location?.city}, {booking.location?.district},
-                                            {booking.location?.division}
-                                        </p>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                )}
-
-                {/* Book another */}
-                {bookings.length > 0 && (
-                    <div className="text-center mt-8">
-                        <button
-                            onClick={() => router.push("/#services")}
-                            className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200"
-                        >
-                            + Book Another Service
-                        </button>
-                    </div>
+                        <div className="text-center mt-8">
+                            <button
+                                onClick={() => router.push("/services")}
+                                className="px-6 py-3 bg-primary text-white font-bold rounded-2xl hover:bg-green-700 transition shadow-lg shadow-green-200"
+                            >
+                                + Book Another Service
+                            </button>
+                        </div>
+                    </>
                 )}
             </div>
         </div>

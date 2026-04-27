@@ -31,8 +31,7 @@ export default function HowItWorks() {
                                 transform: inView ? "translateY(0)" : "translateY(40px)",
                                 transition: `opacity 0.6s ease ${i * 0.15}s, transform 0.6s ease ${i * 0.15}s`,
                             }}
-                            className="text-center"
-                        >
+                            className="text-center">
                             <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                                 <span className="text-2xl font-extrabold text-primary">{s.step}</span>
                             </div>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import useInView from "@/hooks/useInView";
+import { RiStarSFill } from "react-icons/ri";
 
 export default function TestimonialsSection() {
     const [reviews, setReviews] = useState([]);
@@ -26,8 +27,7 @@ export default function TestimonialsSection() {
                     </h2>
                 </div>
                 <div ref={ref} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {reviews.length === 0 ? (
-                        [1, 2, 3].map(i => (
+                    {reviews.length === 0 ? ([1, 2, 3].map(i => (
                             <div key={i} className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 animate-pulse">
                                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-3 w-24" />
                                 <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
@@ -50,11 +50,10 @@ export default function TestimonialsSection() {
                                     transform: inView ? "translateY(0)" : "translateY(40px)",
                                     transition: `opacity 0.7s ease ${i * 0.15}s, transform 0.7s ease ${i * 0.15}s`,
                                 }}
-                                className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 shadow-sm hover:shadow-md transition"
-                            >
+                                className="bg-background dark:bg-[#0F1A12] rounded-3xl p-6 shadow-sm hover:shadow-md transition">
                                 <div className="flex gap-1 mb-3">
                                     {Array(r.ratings).fill(0).map((_, j) => (
-                                        <span key={j} className="text-accent text-lg">★</span>
+                                        <span key={j} className="text-accent text-lg"><RiStarSFill /></span>
                                     ))}
                                 </div>
                                 <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-4">
@@ -66,8 +65,7 @@ export default function TestimonialsSection() {
                                         alt={r.userName}
                                         width={44}
                                         height={44}
-                                        className="rounded-full"
-                                    />
+                                        className="rounded-full"/>
                                     <div>
                                         <p className="font-semibold text-gray-900 text-sm">{r.userName}</p>
                                         <p className="text-xs text-muted">{r.role}</p>

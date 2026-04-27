@@ -1,9 +1,8 @@
 "use client";
 import Link from "next/link";
 import useInView from "@/hooks/useInView";
-import { FaArrowRight } from "react-icons/fa";
 
-export default function CTASection() {
+export default function AboutCTA() {
     const [ref, inView] = useInView();
 
     return (
@@ -17,19 +16,28 @@ export default function CTASection() {
                     transform: inView ? "translateY(0)" : "translateY(30px)",
                     transition: "opacity 0.8s ease, transform 0.8s ease",
                 }}
-                className="max-w-3xl mx-auto px-4 text-center text-white">
+                className="max-w-3xl mx-auto px-4 text-center text-white"
+            >
                 <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
-                    Ready to Book a Caretaker?
+                    Join the Care.xyz Family
                 </h2>
                 <p className="text-lg opacity-80 mb-8">
-                    Join 1,200+ families who trust Care.xyz for their loved ones.
+                    Become part of Bangladesh's most trusted care community today.
                 </p>
-                <Link
-                    href="/register"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-accent text-gray-900 font-bold rounded-2xl hover:bg-yellow-400 transition shadow-xl text-lg">
-                    Get Started Today
-                    <FaArrowRight />
-                </Link>
+                <div className="flex gap-4 justify-center flex-wrap">
+                    <Link
+                        href="/register"
+                        className="px-8 py-4 bg-accent text-gray-900 font-bold rounded-2xl hover:bg-yellow-400 transition shadow-xl text-lg"
+                    >
+                        Get Started Free →
+                    </Link>
+                    <Link
+                        href="/services"
+                        className="px-8 py-4 border-2 border-white text-white font-bold rounded-2xl hover:bg-white hover:text-gray-900 transition text-lg"
+                    >
+                        View Services
+                    </Link>
+                </div>
             </div>
         </section>
     );
