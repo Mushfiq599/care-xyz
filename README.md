@@ -1,36 +1,206 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Care.xyz — Smart Care Service Platform
 
-## Getting Started
+Care.xyz is a modern full-stack caregiving platform built with Next.js, MongoDB, Stripe, and Tailwind CSS.  
+It helps families book trusted caregivers for newborn care, elderly care, nursing, physiotherapy, and more.
 
-First, run the development server:
+---
+
+# ✨ Features
+
+- 🔐 Secure Authentication
+- 💳 Stripe Payment Integration
+- 📅 Online Service Booking System
+- 👩‍⚕️ Multiple Care Services
+- 📍 Bangladesh Location Support
+- 🧾 Booking Management
+- 📊 Admin Dashboard
+- 🌙 Dark Mode UI
+- 📱 Fully Responsive Design
+- ⚡ Modern Next.js App Router Architecture
+
+---
+
+# 🛠️ Tech Stack
+
+## Frontend
+- Next.js 15
+- React
+- Tailwind CSS
+- React Icons
+
+## Backend
+- Next.js API Routes
+- MongoDB
+- Mongoose
+
+## Payment
+- Stripe
+
+## Authentication
+- NextAuth.js
+
+---
+
+# 📂 Project Structure
+
+```bash
+/app
+  /(main)
+  /(dashboard)
+  /api
+/components
+/data
+/hooks
+/lib
+/models
+/public
+/styles
+```
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone the repository
+
+```bash
+git clone https://github.com/mushfiq599/care-xyz.git
+```
+
+## 2. Navigate to project
+
+```bash
+cd care-xyz
+```
+
+## 3. Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+# 🔑 Environment Variables
+
+Create a `.env.local` file in the root directory.
+
+```env
+MONGODB_URI=your_mongodb_uri
+
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+STRIPE_SECRET_KEY=your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
+```
+
+---
+
+# ▶️ Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+# 💳 Stripe Test Card
 
-To learn more about Next.js, take a look at the following resources:
+Use Stripe test card for payments:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+4242 4242 4242 4242
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Any future date and random CVC will work.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# 👨‍💻 Admin Dashboard Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Booking Management
+- Revenue Tracking
+- User Statistics
+- Booking Status Control
+- Recent Booking Monitoring
+
+---
+
+# 📸 Main Pages
+
+- Home Page
+- Services Page
+- Service Details
+- Booking Flow
+- Payment Checkout
+- User Bookings
+- Admin Dashboard
+
+---
+
+# 🎨 UI Highlights
+
+- Clean healthcare-inspired design
+- Modern card-based layout
+- Dark mode support
+- Responsive mobile-first interface
+- Smooth animations & transitions
+
+---
+
+# 📦 Build for Production
+
+```bash
+npm run build
+```
+
+---
+
+# 🌍 Deployment
+
+Recommended platforms:
+
+- Vercel
+- Railway
+- Render
+
+---
+
+# 🔒 Security
+
+- Protected API routes
+- Secure Stripe payment processing
+- Environment variable protection
+- Authenticated dashboard access
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+Fork the repository and submit a pull request.
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Developer
+
+Developed by Mushfiqur Rahman
+
+```bash
+Portfolio: 
+Email: mellowm678@gmail.com
+```
