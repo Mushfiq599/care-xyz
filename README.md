@@ -41,23 +41,6 @@ It helps families book trusted caregivers for newborn care, elderly care, nursin
 
 ---
 
-# 📂 Project Structure
-
-```bash
-/app
-  /(main)
-  /(dashboard)
-  /api
-/components
-/data
-/hooks
-/lib
-/models
-/public
-/styles
-```
-
----
 
 # 🚀 Getting Started
 
@@ -67,49 +50,6 @@ It helps families book trusted caregivers for newborn care, elderly care, nursin
 git clone https://github.com/mushfiq599/care-xyz.git
 ```
 
-## 2. Navigate to project
-
-```bash
-cd care-xyz
-```
-
-## 3. Install dependencies
-
-```bash
-npm install
-```
-
----
-
-# 🔑 Environment Variables
-
-Create a `.env.local` file in the root directory.
-
-```env
-MONGODB_URI=your_mongodb_uri
-
-NEXTAUTH_SECRET=your_nextauth_secret
-NEXTAUTH_URL=http://localhost:3000
-
-STRIPE_SECRET_KEY=your_stripe_secret_key
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_publishable_key
-```
-
----
-
-# ▶️ Run Development Server
-
-```bash
-npm run dev
-```
-
-Open:
-
-```bash
-http://localhost:3000
-```
-
----
 
 # 💳 Stripe Test Card
 
@@ -145,62 +85,11 @@ Any future date and random CVC will work.
 
 ---
 
-# 🎨 UI Highlights
-
-- Clean healthcare-inspired design
-- Modern card-based layout
-- Dark mode support
-- Responsive mobile-first interface
-- Smooth animations & transitions
-
----
-
-# 📦 Build for Production
-
-```bash
-npm run build
-```
-
----
-
-# 🌍 Deployment
-
-Recommended platforms:
-
-- Vercel
-- Railway
-- Render
-
----
-
-# 🔒 Security
-
-- Protected API routes
-- Secure Stripe payment processing
-- Environment variable protection
-- Authenticated dashboard access
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome.
-
-Fork the repository and submit a pull request.
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
 
 # 👨‍💻 Developer
 
 Developed by Mushfiqur Rahman
 
 ```bash
-Portfolio: 
 Email: mellowm678@gmail.com
 ```
